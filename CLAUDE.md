@@ -9,12 +9,14 @@ This is an interactive resume application built with React 19, TypeScript, and V
 ## Development Commands
 
 ### Core Development
+
 - `npm run dev` - Start development server with hot module replacement
 - `npm run build` - Build for production (runs TypeScript compiler then Vite build)
 - `npm run preview` - Preview production build locally
 - `npm run lint` - Run ESLint on all files
 
 ### Linting and Type Checking
+
 - TypeScript compilation is part of the build process (`tsc -b && vite build`)
 - No separate typecheck script is configured - use `npm run build` to verify types
 - ESLint is configured with React hooks, React refresh, and TypeScript rules
@@ -45,16 +47,19 @@ public/
 ## Configuration Details
 
 ### TypeScript Configuration
+
 - Uses project references (`tsconfig.json` references `tsconfig.app.json` and `tsconfig.node.json`)
 - Strict TypeScript configuration for both app and build tooling
 
 ### ESLint Configuration
+
 - Modern flat config format (`eslint.config.js`)
 - Configured for TypeScript and React with hooks
 - Includes React refresh support for development
 - Targets browser environment with ES2020
 
 ### Vite Configuration
+
 - Standard React plugin setup
 - No custom configuration beyond defaults
 
@@ -64,3 +69,8 @@ public/
 - No testing framework is configured yet
 - No additional UI libraries or frameworks are installed
 - Uses React 19's latest patterns (createRoot, StrictMode)
+
+## Data Model (ERD)
+
+https://dbdiagram.io/d/Interactive-Resume-ERD-68be268261a46d388edeaaa9
+DBML Source: ./plans/schema.dbml
