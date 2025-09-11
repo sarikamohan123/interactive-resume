@@ -66,7 +66,7 @@ Core libraries with 2025 versions:
 
 ## Module Patterns
 
-Below are some patterns we would like to follow to keep things simple and consitent
+Below are some patterns we would like to follow to keep things simple and consistent
 
 ### Admin Patterns
 
