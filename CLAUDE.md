@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an interactive resume application built with React 19, TypeScript, and Vite. It's currently in early development stage, starting from the default Vite React TypeScript template.
+This is a modern interactive resume application built with React 19, TypeScript 5.8+, and Vite 7+ using 2025 best practices. It's currently in early development stage, starting from the default Vite React TypeScript template but will be transformed into a comprehensive portfolio application.
 
 ## Development Commands
 
@@ -15,11 +15,14 @@ This is an interactive resume application built with React 19, TypeScript, and V
 - `npm run preview` - Preview production build locally
 - `npm run lint` - Run ESLint on all files
 
-### Linting and Type Checking
+### Modern Development Workflow (2025)
 
-- TypeScript compilation is part of the build process (`tsc -b && vite build`)
-- No separate typecheck script is configured - use `npm run build` to verify types
-- ESLint is configured with React hooks, React refresh, and TypeScript rules
+- **TypeScript compilation** integrated in build process with enhanced checking
+- **Type checking** available via `npm run type-check` for development
+- **Modern ESLint** with React 19 patterns and strict TypeScript rules
+- **Prettier v3+** with import sorting and consistent formatting
+- **Vitest** for fast unit and integration testing
+- **TanStack Router CLI** for automatic route generation
 
 ## Project Structure
 
@@ -37,12 +40,22 @@ public/
 
 ```
 
-## Technical Stack
+## Technical Stack (2025)
 
-- **React 19** - Latest React version with new createRoot API
-- **TypeScript 5.8** - Strict typing with project references setup
-- **Vite 7** - Modern build tool with fast HMR
-- **ESLint 9** - Modern flat config with TypeScript and React rules
+### Core Framework
+- **React 19** - Latest with Concurrent Features, useOptimistic, and React Compiler
+- **TypeScript 5.8+** - Strict typing with enhanced project references
+- **Vite 7+** - Modern build tool with optimized HMR and ESM support
+- **ESLint 9** - Modern flat config with comprehensive TypeScript rules
+
+### Key Dependencies (To be installed)
+- **TanStack Router v2** - Type-safe file-based routing with modern patterns
+- **TanStack Query v5** - Advanced server state management with real-time features
+- **React Hook Form** - Performant forms with Zod validation
+- **Supabase v2+** - Backend-as-a-Service with real-time capabilities
+- **shadcn/ui** - Modern component library built on Radix UI
+- **Vitest** - Fast testing framework replacing Jest
+- **Tailwind CSS** - Utility-first styling (via shadcn/ui setup)
 
 ## Configuration Details
 
@@ -58,19 +71,40 @@ public/
 - Includes React refresh support for development
 - Targets browser environment with ES2020
 
-### Vite Configuration
+### Modern Vite Configuration (2025)
 
-- Standard React plugin setup
-- No custom configuration beyond defaults
+- **Advanced React plugin** with React 19 optimizations
+- **TanStack Router integration** for file-based routing
+- **TypeScript path resolution** with modern alias support
+- **Optimized code splitting** with manual chunk configuration
+- **Modern build targets** (ES2022) for better performance
+- **Development optimizations** with enhanced HMR and auto-open
 
-## Development Notes
+## Development Notes (2025)
 
-- Currently using the default Vite React TypeScript template
-- No testing framework is configured yet
-- No additional UI libraries or frameworks are installed
-- Uses React 19's latest patterns (createRoot, StrictMode)
+- **Starting point**: Default Vite React TypeScript template
+- **Target architecture**: Modern full-stack application with 2025 patterns
+- **Testing strategy**: Vitest + Testing Library + Playwright for comprehensive coverage
+- **UI framework**: shadcn/ui for modern, accessible components
+- **State management**: TanStack Query for server state, React 19 hooks for client state
+- **Form handling**: React Hook Form + Zod for type-safe validation
+- **Authentication**: Supabase Auth with single admin user pattern
+- **Real-time features**: Supabase subscriptions for live data updates
+
+### Modern React 19 Features Used
+- **Concurrent rendering** for better performance
+- **useOptimistic** for optimistic UI updates
+- **Suspense boundaries** for declarative loading states
+- **React Compiler** for automatic memoization
+- **Enhanced error boundaries** for robust error handling
 
 ## Data Model (ERD)
 
 https://dbdiagram.io/d/Interactive-Resume-ERD-68be268261a46d388edeaaa9
 DBML Source: ./plans/schema.dbml
+
+## Architecture Documentation
+
+- **Setup Guide**: `./plans/initial-setup.md` - Modern 2025 setup instructions
+- **Architecture Patterns**: `./plans/patterns.md` - Comprehensive architectural guidance
+- **Project Information**: `./plans/agents.md` - Detailed project context for development

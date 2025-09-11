@@ -1,44 +1,52 @@
 # Initial Setup Guide
 
-This document outlines the initial setup steps required to transform the current Vite React TypeScript template into the Interactive Resume application.
+This document outlines the initial setup steps required to transform the current Vite React TypeScript template into the Interactive Resume application using modern 2025 patterns.
 
 ## Phase 1: Core Dependencies Installation
 
 ### Install Required Packages
 
 ```bash
-# Backend & Authentication
-npm install @supabase/supabase-js
+# Backend & Authentication (Latest 2025 versions)
+npm install @supabase/supabase-js@latest
 
-# Routing
-npm install @tanstack/react-router
-npm install -D @tanstack/router-devtools @tanstack/router-vite-plugin
+# Modern Routing (TanStack Router v2)
+npm install @tanstack/react-router@latest
+npm install -D @tanstack/router-devtools@latest @tanstack/router-vite-plugin@latest @tanstack/router-cli@latest
 
-# State Management & API
-npm install @tanstack/react-query
-npm install -D @tanstack/react-query-devtools
+# State Management & API (React Query v5+)
+npm install @tanstack/react-query@latest
+npm install -D @tanstack/react-query-devtools@latest
 
-# Data Tables
-npm install @tanstack/react-table
+# Data Tables (Modern TanStack Table)
+npm install @tanstack/react-table@latest
 
-# Form Management & Validation
-npm install react-hook-form @hookform/resolvers zod
+# Form Management & Validation (2025 stable versions)
+npm install react-hook-form@latest @hookform/resolvers@latest zod@latest
 
-# UI Components (shadcn/ui)
+# Modern UI Components (shadcn/ui with latest CLI)
 npx shadcn@latest init
-```
+
+# Modern bundling utilities
+npm install -D vite-tsconfig-paths@latest
 
 ### Development Dependencies
 
 ```bash
-# Additional TypeScript types
-npm install -D @types/node
+# Additional TypeScript types for Node.js
+npm install -D @types/node@latest
 
-# Prettier for code formatting
-npm install -D prettier
+# Modern code formatting with Prettier v3+
+npm install -D prettier@latest @ianvs/prettier-plugin-sort-imports@latest
 
-# Additional ESLint plugins if needed
-npm install -D @typescript-eslint/eslint-plugin @typescript-eslint/parser
+# Modern Biome alternative (faster than ESLint+Prettier)
+# npm install -D @biomejs/biome@latest
+
+# Testing utilities (Vitest for modern testing)
+npm install -D vitest@latest @vitest/ui@latest @testing-library/react@latest @testing-library/jest-dom@latest
+
+# Modern build analysis
+npm install -D vite-bundle-analyzer@latest
 ```
 
 ## Phase 2: Project Structure Setup
@@ -124,68 +132,180 @@ export const queryClient = new QueryClient({
 })
 ```
 
-### 3. TanStack Router Configuration
+### 3. Modern Vite Configuration (2025)
 
-Update `vite.config.ts`:
+Update `vite.config.ts` with modern patterns:
 
 ```typescript
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { TanStackRouterVite } from '@tanstack/router-vite-plugin'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import path from 'path'
 
 export default defineConfig({
-  plugins: [react(), TanStackRouterVite()],
+  plugins: [
+    // Modern React plugin with automatic JSX runtime
+    react({
+      // Enable React DevTools in development
+      babel: {
+        plugins: process.env.NODE_ENV === 'development' ? [['@babel/plugin-transform-react-jsx-development']] : [],
+      },
+    }),
+    // TanStack Router with file-based routing
+    TanStackRouterVite({
+      routesDirectory: './src/routes',
+      generatedRouteTree: './src/routeTree.gen.ts',
+      routeFileIgnorePrefix: '-',
+      quoteStyle: 'single',
+    }),
+    // TypeScript path resolution
+    tsconfigPaths(),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
+  // Modern development server configuration
+  server: {
+    port: 5173,
+    host: true, // Enable network access
+    open: true, // Auto-open browser
+  },
+  // Modern build configuration
+  build: {
+    target: 'es2022',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['@tanstack/react-router'],
+          query: ['@tanstack/react-query'],
+          supabase: ['@supabase/supabase-js'],
+        },
+      },
+    },
+  },
+  // Modern optimizations
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      '@tanstack/react-router',
+      '@tanstack/react-query',
+      '@supabase/supabase-js',
+    ],
+  },
 })
 ```
 
-### 4. Prettier Configuration
+### 4. Modern Code Formatting Configuration
 
-Create `.prettierrc`:
+Create `.prettierrc.json` (Prettier v3+ format):
 
 ```json
 {
+  "$schema": "https://json.schemastore.org/prettierrc",
   "semi": false,
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "es5",
-  "printWidth": 80
+  "printWidth": 100,
+  "useTabs": false,
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "avoid",
+  "endOfLine": "lf",
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "<BUILTIN_MODULES>",
+    "",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@/(.*)$",
+    "",
+    "^[./]"
+  ],
+  "importOrderTypeScriptVersion": "5.0.0"
 }
 ```
 
-### 5. Update TypeScript Configuration
+Create `.prettierignore`:
 
-Update `tsconfig.app.json`:
+```
+dist
+node_modules
+*.gen.ts
+routeTree.gen.ts
+.env*
+```
+
+### 5. Modern TypeScript Configuration (2025)
+
+Update `tsconfig.app.json` for modern patterns:
 
 ```json
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable", "WebWorker"],
     "module": "ESNext",
     "skipLibCheck": true,
+    
+    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    
+    /* Enhanced linting for 2025 */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    
+    /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/utils/*": ["./src/utils/*"]
     }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ]
 }
+```
+
+Add modern `vitest.config.ts` for testing:
+
+```typescript
+import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
+import tsconfigPaths from 'vite-tsconfig-paths'
+
+export default defineConfig({
+  plugins: [react(), tsconfigPaths()],
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    globals: true,
+  },
+})
 ```
 
 ## Phase 4: Database Setup (Supabase)
@@ -234,81 +354,164 @@ CREATE POLICY "Admin full access" ON categories FOR ALL USING (auth.uid() = 'adm
 
 ## Phase 5: Core Components Setup
 
-### 1. Update Main App Component
+### 1. Modern Main App Component (2025)
 
-Update `src/main.tsx`:
+Update `src/main.tsx` with modern patterns:
 
 ```typescript
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
+
 import { routeTree } from './routeTree.gen'
+import { queryClient } from './lib/queryClient'
+
 import './index.css'
 
-const queryClient = new QueryClient()
-const router = createRouter({ routeTree })
+// Create router with modern configuration
+const router = createRouter({
+  routeTree,
+  context: {
+    queryClient,
+  },
+  defaultPreload: 'intent',
+  defaultPreloadStaleTime: 0,
+})
 
+// Register router for TypeScript
 declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router
   }
 }
 
-createRoot(document.getElementById('root')!).render(
+// Get root element with proper error handling
+const rootElement = document.getElementById('root')
+if (!rootElement) {
+  throw new Error('Root element not found')
+}
+
+// Modern React 19 rendering with Concurrent Features
+createRoot(rootElement).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} />
+      {import.meta.env.DEV && (
+        <ReactQueryDevtools 
+          initialIsOpen={false} 
+          position="bottom-right"
+        />
+      )}
     </QueryClientProvider>
-  </StrictMode>,
+  </StrictMode>
 )
 ```
 
-### 2. Create Basic Route Structure
+### 2. Modern Route Structure (2025)
 
-Create `src/routes/__root.tsx`:
+Create `src/routes/__root.tsx` with modern patterns:
 
 ```typescript
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { QueryClient } from '@tanstack/react-query'
+import { Suspense } from 'react'
+
+import { ErrorBoundary } from '@/components/error-boundary'
+import { GlobalLoading } from '@/components/global-loading'
+
+interface RouterContext {
+  queryClient: QueryClient
+}
 
 export const Route = createRootRoute({
-  component: () => (
-    <>
-      <div className="p-2 flex gap-2">
-        <Link to="/" className="[&.active]:font-bold">
-          Home
-        </Link>
-        <Link to="/showcase" className="[&.active]:font-bold">
-          Showcase
-        </Link>
-        <Link to="/admin" className="[&.active]:font-bold">
-          Admin
-        </Link>
-      </div>
-      <hr />
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
+  component: RootComponent,
+  errorComponent: ({ error }) => (
+    <div className="p-4">
+      <h1>Something went wrong!</h1>
+      <pre>{error.message}</pre>
+    </div>
   ),
 })
+
+function RootComponent() {
+  return (
+    <ErrorBoundary>
+      <div className="min-h-screen bg-background font-sans antialiased">
+        <Suspense fallback={<GlobalLoading />}>
+          <Outlet />
+        </Suspense>
+        {import.meta.env.DEV && (
+          <TanStackRouterDevtools position="bottom-left" />
+        )}
+      </div>
+    </ErrorBoundary>
+  )
+}
 ```
 
-## Phase 6: Environment & Package Scripts Update
+Create modern index route `src/routes/index.tsx`:
 
-### Update package.json scripts
+```typescript
+import { createFileRoute } from '@tanstack/react-router'
+import { Helmet } from 'react-helmet-async'
+
+import { ResumeLayout } from '@/components/layout/resume-layout'
+import { ResumePage } from '@/pages/resume-page'
+
+export const Route = createFileRoute('/')({n  component: RouteComponent,
+  meta: () => [
+    {
+      title: 'Interactive Resume - Your Name',
+      description: 'Modern interactive resume showcasing skills and experience',
+    },
+  ],
+})
+
+function RouteComponent() {
+  return (
+    <>
+      <Helmet>
+        <title>Interactive Resume - Your Name</title>
+        <meta 
+          name="description" 
+          content="Modern interactive resume showcasing skills and experience" 
+        />
+      </Helmet>
+      <ResumeLayout>
+        <ResumePage />
+      </ResumeLayout>
+    </>
+  )
+}
+```
+
+## Phase 6: Modern Package Scripts (2025)
+
+### Update package.json scripts with modern tooling
 
 ```json
 {
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "type-check": "tsc --noEmit"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext ts,tsx --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css,md,json}\"",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "type-check": "tsc --noEmit",
+    "routes:generate": "tsr generate",
+    "routes:watch": "tsr watch",
+    "analyze": "vite-bundle-analyzer",
+    "clean": "rm -rf dist node_modules/.vite",
+    "postinstall": "npm run routes:generate"
   }
 }
 ```

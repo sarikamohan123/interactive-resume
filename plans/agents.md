@@ -4,40 +4,46 @@ The purpose of this application is to give recruiters more insight into my skill
 frontend software engineer. A static resume only has one "state". With an application,
 We can make use of things like filtering, sorting, and data-relation.
 
-## Coding Standards & Style
+## Coding Standards & Style (2025)
 
-- **Formatting:** Always format code using Prettier.
-- **Naming Conventions:** Adhere to the project's established conventions, especially within component directories.
+- **Formatting:** Always format code using Prettier v3+ with import sorting.
+- **Naming Conventions:** Follow modern React 19 and TypeScript 5.8+ conventions.
+- **Code Quality:** Use ESLint 9 with strict TypeScript rules and React hooks patterns.
+- **Testing:** Write tests using Vitest and Testing Library for all components and hooks.
 
-## Architecture Notes
+## Architecture Notes (2025)
 
-We will be using the supabase sdk on the client, so we do not need to build a backend. We will be using Supabase Auth for the admin authentication.
+We will be using the Supabase v2+ SDK on the client with modern patterns, eliminating the need for a custom backend. Authentication will use Supabase Auth with enhanced security features for single admin user access. The application will leverage React 19's concurrent features and modern state management patterns.
 
 ## Data Model (ERD)
 
 https://dbdiagram.io/d/Interactive-Resume-ERD-68be268261a46d388edeaaa9
-DBML Source: ./schema.dbml
+DBML Source: ./plans/schema.dbml
 
-## Structure
+## Modern Routing Structure (2025)
 
-For the routing, we will follow this setup for file-based routing using @tanstack/react-router:
+We will use TanStack Router v2 with modern file-based routing patterns:
 
 https://tanstack.com/router/latest/docs/framework/react/routing/file-based-routing
 
-below is the URL structure we will use:
+URL structure with modern routing conventions:
 
 ```
-|__/ # Resume Page
+|__/ # Resume Page (index.tsx)
 |
 |__/showcase # Showcase Directory
-| |__/ # Showcase List Page - Lists a series of "advanced frontend problems"
-| |__/[id] # Showcase Entity Page - A mini internal application that demonstrates the UX/UI problems solution
+| |__/ # Showcase List Page (showcase/index.tsx)
+| |__/$id # Dynamic Showcase Detail ($id.tsx) - Mini applications demonstrating solutions
 |
-|__/admin # Admin Directory
-| |__/ # Login Page (guarded when user is logged in)
-| |__/categories # Edit Categories Page
-| |__/subcategories # Edit Subcategories Page
-| |__/skills # Skill Page
+|__/admin # Protected Admin Directory (with __layout.tsx for auth guard)
+| |__/ # Admin Dashboard (admin/index.tsx)
+| |__/categories # Categories Management (categories/index.tsx)
+| |__/categories/$id # Edit Category (categories/$id.tsx)
+| |__/categories/new # New Category (categories/new.tsx)
+| |__/subcategories # Subcategories Management (subcategories/index.tsx)
+| |__/subcategories/$id # Edit Subcategory (subcategories/$id.tsx)
+| |__/skills # Skills Management (skills/index.tsx)
+| |__/skills/$id # Edit Skill (skills/$id.tsx)
 ```
 
 ## Modules
@@ -46,20 +52,21 @@ below is the URL structure we will use:
 - Showcase - Module for publicly displaying solutions to tough UX/UI problems
 - Admin - Module for editing resume data. Will only be accessible by one user (superuser)
 
-## Application Dependencies
+## Modern Application Dependencies (2025)
 
-Our application will be built with `vite/react`.
+Built with modern Vite 7+ and React 19 patterns.
 
-The core libraries we will use are:
+Core libraries with 2025 versions:
 
-- `@supabase/supabase-js` - Backend System
-- `@tanstack/react-router` - Application Routing
-- `@tanstack/react-query` - Caching
-- `@tanstack/react-table` - Rendering Tables
-- `zod` - Data Validation
-- `react-hook-form` - Form Validation
-- `@hookform/resolvers` - For integrating `react-hook-form` with `zod`
-- `shadcn` - UI Components
+- `@supabase/supabase-js@latest` - Modern Backend-as-a-Service with real-time features
+- `@tanstack/react-router@latest` - Type-safe file-based routing (v2)
+- `@tanstack/react-query@latest` - Advanced server state management (v5+)
+- `@tanstack/react-table@latest` - Modern data table rendering with virtualization
+- `zod@latest` - TypeScript-first schema validation
+- `react-hook-form@latest` - Performant forms with minimal re-renders
+- `@hookform/resolvers@latest` - Zod integration for React Hook Form
+- `shadcn/ui` - Modern component library built on Radix UI and Tailwind
+- `vitest@latest` - Fast testing framework replacing Jest
 
 ## Module Patterns
 
@@ -67,19 +74,35 @@ Below are some patterns we would like to follow to keep things simple and consit
 
 ### Admin Patterns
 
-#### Form Validation
+#### Modern Form Validation (2025)
 
-All forms should use the same mechansim for validation. For this mechanism, A global custom react hook that combines the functionality of `zod`,`@hookform/resolvers`,`react-hook-form`, and `@tanstack/react-query`for validating user input to be posted to the server is needed. There will be a sparate validation schema for each entity.
+All forms use a standardized validation mechanism combining modern React 19 patterns. The global custom hook integrates `zod`, `@hookform/resolvers`, `react-hook-form`, and `@tanstack/react-query` with React 19's `useOptimistic` for immediate UI feedback.
 
-The mechanism should be defined as:
+Each entity has a separate validation schema with TypeScript inference.
 
-1. An instance of the above hook for the particular form (entity) to render
+Modern mechanism pattern:
 
-2. An instance of the form component that will take in the hook described in step 1
+1. **Universal Form Hook**: Combines validation, mutation, and optimistic updates
+2. **Type-safe Form Component**: Accepts the hook instance with full TypeScript support
+3. **Optimistic Updates**: Uses React 19's `useOptimistic` for immediate feedback
+4. **Error Boundaries**: Graceful error handling with user-friendly messages
 
-### Routing Patterns
+### Modern Routing Patterns (2025)
 
-All routes should have a corresponding page component. This keeps any page logic out of the route file. For an example, see files:
+All routes use TanStack Router v2 patterns with clear separation of concerns:
 
-- src/routes/(resume)/index.tsx
-- src/pages/ResumePage.tsx
+1. **Route Files**: Handle routing logic, type safety, and data loading
+2. **Page Components**: Contain presentation logic and component composition
+3. **Layout Components**: Provide shared layouts with Suspense boundaries
+4. **Error Boundaries**: Handle route-level error states
+
+Modern file structure examples:
+- `src/routes/index.tsx` - Route definition with loaders
+- `src/pages/resume-page.tsx` - Page component with business logic
+- `src/components/layout/resume-layout.tsx` - Layout with error boundaries
+
+Each route leverages modern features:
+- **Type-safe navigation** with TanStack Router
+- **Suspense boundaries** for loading states  
+- **Error boundaries** for graceful error handling
+- **Prefetching** for optimized performance

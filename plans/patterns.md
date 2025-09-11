@@ -1,20 +1,35 @@
-# Architecture Patterns & High-Level Plans
+# Architecture Patterns & High-Level Plans (2025)
 
-This document outlines the architectural patterns, design principles, and high-level implementation strategies for the Interactive Resume application.
+This document outlines the modern architectural patterns, design principles, and high-level implementation strategies for the Interactive Resume application using 2025 best practices.
 
 ## Core Architecture Pattern
 
-### Client-Side Architecture
-- **Single Page Application (SPA)** with React 19
-- **Backend-as-a-Service (BaaS)** using Supabase
-- **File-based routing** with TanStack Router
-- **Component-driven development** with shadcn/ui
+### Modern Client-Side Architecture (2025)
+- **Single Page Application (SPA)** with React 19 + Concurrent Features
+- **Backend-as-a-Service (BaaS)** using Supabase v2+ with Real-time
+- **File-based routing** with TanStack Router v2 (Type-safe routing)
+- **Component-driven development** with shadcn/ui + Radix UI
+- **Modern bundling** with Vite 7+ and optimized code splitting
+- **Type-safe environment** with TypeScript 5.8+ strict mode
 
-### Data Flow Pattern
+### Modern Data Flow Pattern (2025)
 ```
-User Interface → React Query → Supabase Client → Supabase Database
-     ↑                                                    ↓
-Form Validation ← Zod Schemas ← API Response ← Database Query
+User Interface → TanStack Query v5 → Supabase Client v2 → Supabase Database
+     ↑                    ↓                                        ↓
+Zod Validation ← Type Safety ← API Response ← Row Level Security
+     ↑                    ↓
+React Hook Form ← Optimistic Updates
+```
+
+### State Management Flow (2025)
+```
+Server State (TanStack Query) ← Supabase Real-time
+     ↓
+Local State (React 19 hooks + useOptimistic)
+     ↓
+Form State (React Hook Form + Zod)
+     ↓
+UI State (CSS-in-JS + CSS Variables)
 ```
 
 ## Module Architecture
@@ -51,11 +66,13 @@ Local State (React hooks) ← Component State
 Form State (React Hook Form) ← User Input
 ```
 
-### Caching Strategy
-- **React Query** for server state management
-- **Stale-while-revalidate** for optimal UX
-- **Optimistic updates** for admin operations
-- **Background refetching** for data consistency
+### Modern Caching Strategy (2025)
+- **TanStack Query v5** with advanced caching patterns
+- **Stale-while-revalidate** with intelligent background updates
+- **React 19 useOptimistic** for immediate UI feedback
+- **Real-time subscriptions** via Supabase for live data
+- **Offline-first** with service worker caching
+- **Smart prefetching** based on user navigation patterns
 
 ### Data Validation Pattern
 ```
@@ -74,32 +91,43 @@ Layout Components
 └── Footer
 ```
 
-### Component Hierarchy
+### Modern Component Hierarchy (2025)
 ```
-Pages (Route handlers)
-├── Containers (Data fetching + business logic)
-│   ├── Presentational Components (UI rendering)
-│   │   ├── Base Components (shadcn/ui)
-│   │   └── Custom Components (domain-specific)
-│   └── Form Components (validation + submission)
-└── Utility Components (shared across modules)
+Route Components (File-based routing)
+├── Layout Components (Shared layouts with Suspense)
+│   ├── Data Containers (Server state + React Query)
+│   │   ├── UI Components (shadcn/ui + Radix)
+│   │   │   ├── Compound Components (Composition patterns)
+│   │   │   └── Primitive Components (Headless UI)
+│   │   └── Form Components (React Hook Form + Zod)
+│   └── Async Components (Lazy loading + Suspense)
+└── Utility Components (Cross-cutting concerns)
 ```
 
 ## Routing Architecture
 
-### File-based Routing Structure
+### Modern File-based Routing (TanStack Router v2)
 ```
 src/routes/
-├── (resume)/              # Public resume routes
-│   └── index.tsx          → ResumePage
-├── showcase/              # Public showcase routes
-│   ├── index.tsx          → ShowcaseListPage
-│   └── [id]/index.tsx     → ShowcaseDetailPage
-└── admin/                 # Protected admin routes
-    ├── index.tsx          → AdminLoginPage
-    ├── categories/        → CategoriesManagementPage
-    ├── subcategories/     → SubcategoriesManagementPage
-    └── skills/            → SkillsManagementPage
+├── __root.tsx                    # Root layout with providers
+├── index.tsx                     # Resume homepage (/)
+├── showcase/
+│   ├── index.tsx                 # Showcase list (/showcase)
+│   └── $id.tsx                   # Dynamic showcase detail (/showcase/$id)
+├── admin/
+│   ├── __layout.tsx              # Admin layout with auth guard
+│   ├── index.tsx                 # Admin dashboard (/admin)
+│   ├── categories/
+│   │   ├── index.tsx             # Categories list (/admin/categories)
+│   │   ├── $id.tsx               # Edit category (/admin/categories/$id)
+│   │   └── new.tsx               # New category (/admin/categories/new)
+│   ├── subcategories/
+│   │   ├── index.tsx             # Subcategories management
+│   │   └── $id.tsx               # Edit subcategory
+│   └── skills/
+│       ├── index.tsx             # Skills management
+│       └── $id.tsx               # Edit skill
+└── -components/                  # Route-level components (ignored by router)
 ```
 
 ### Route Protection Pattern
@@ -109,16 +137,41 @@ Route Guard → Auth Check → Redirect Logic → Component Rendering
 
 ## Form Management Patterns
 
-### Universal Form Hook Pattern
+### Modern Universal Form Hook (2025)
 ```typescript
-// Custom hook combining all form utilities
-const useEntityForm = <T>(schema: ZodSchema<T>, options: FormOptions) => {
-  // Combines: zod + react-hook-form + @hookform/resolvers + react-query
+// Modern form hook with React 19 features
+const useEntityForm = <T extends Record<string, unknown>>(
+  schema: ZodSchema<T>,
+  options: FormOptions<T>
+) => {
+  const form = useForm<T>({
+    resolver: zodResolver(schema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+  })
+  
+  const mutation = useMutation({
+    mutationFn: options.mutationFn,
+    onMutate: async (newData) => {
+      // React 19 optimistic updates
+      await queryClient.cancelQueries({ queryKey: options.queryKey })
+      const previousData = queryClient.getQueryData(options.queryKey)
+      queryClient.setQueryData(options.queryKey, newData)
+      return { previousData }
+    },
+    onError: (err, newData, context) => {
+      queryClient.setQueryData(options.queryKey, context?.previousData)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: options.queryKey })
+    },
+  })
+  
   return {
-    form: useForm(),
-    validation: zodResolver(schema),
-    mutation: useMutation(),
-    handleSubmit: optimizedSubmitHandler
+    form,
+    mutation,
+    isLoading: mutation.isPending,
+    handleSubmit: form.handleSubmit(mutation.mutate),
   }
 }
 ```
@@ -171,17 +224,26 @@ User Login → Supabase Auth → JWT Token → Session Management → Route Acce
 Route-level splitting → Module-level splitting → Component-level splitting
 ```
 
-### Loading Patterns
-- **Skeleton loading** for data fetching states
-- **Progressive loading** for complex components
-- **Lazy loading** for non-critical components
-- **Prefetching** for anticipated user actions
+### Modern Loading Patterns (2025)
+- **React 18+ Suspense** for declarative loading states
+- **Skeleton UI** with CSS-driven animations
+- **Progressive enhancement** with streaming SSR patterns
+- **Smart code splitting** with dynamic imports
+- **Intersection Observer** for lazy loading
+- **Link prefetching** with TanStack Router
+- **Resource hints** (preload, prefetch, preconnect)
+- **Service Worker** for offline-first loading
 
-### Optimization Patterns
-- **React.memo** for expensive re-renders
-- **useMemo/useCallback** for complex computations
-- **Virtual scrolling** for large data sets (tables)
-- **Image optimization** for showcase content
+### Modern Optimization Patterns (2025)
+- **React 19 Compiler** (auto-memoization)
+- **React.memo** only for proven performance bottlenecks
+- **Virtual scrolling** with @tanstack/react-virtual
+- **Image optimization** with modern formats (AVIF, WebP)
+- **Bundle analysis** with vite-bundle-analyzer
+- **Tree shaking** with modern ESM imports
+- **Critical CSS** extraction for above-the-fold content
+- **Web Workers** for heavy computations
+- **Concurrent rendering** with React 19 features
 
 ## Error Handling Patterns
 
@@ -199,19 +261,44 @@ Global Error Boundary → Module Error Boundaries → Component Error Handling
 
 ## Testing Patterns
 
-### Testing Strategy
-- **Unit tests**: Utility functions and custom hooks
-- **Integration tests**: Component + API interactions
-- **E2E tests**: Critical user journeys
-- **Visual regression tests**: UI consistency
+### Modern Testing Strategy (2025)
+- **Vitest** for fast unit and integration tests
+- **Testing Library** with modern React 19 patterns
+- **MSW v2** for API mocking
+- **Playwright** for E2E testing
+- **Chromatic** for visual regression testing
+- **React Testing Library** with Suspense testing
+- **Component testing** with Storybook 8+
+- **Performance testing** with Web Vitals
+- **Accessibility testing** with axe-core
 
-### Test Organization
+### Modern Test Organization (2025)
 ```
-src/__tests__/
-├── components/     # Component tests
-├── hooks/          # Custom hook tests
-├── utils/          # Utility function tests
-└── integration/    # API integration tests
+src/
+├── components/
+│   ├── ui/
+│   │   ├── button.tsx
+│   │   └── button.test.tsx        # Co-located tests
+│   └── forms/
+│       ├── user-form.tsx
+│       └── user-form.test.tsx
+├── hooks/
+│   ├── use-skills.ts
+│   └── use-skills.test.ts
+├── lib/
+│   ├── utils.ts
+│   └── utils.test.ts
+└── test/
+    ├── setup.ts                   # Test setup
+    ├── mocks/                     # MSW handlers
+    ├── fixtures/                  # Test data
+    └── utils/                     # Test utilities
+
+e2e/
+├── specs/
+│   ├── resume.spec.ts
+│   └── admin.spec.ts
+└── fixtures/                      # E2E test data
 ```
 
 ## Deployment & Environment Patterns
@@ -221,11 +308,15 @@ src/__tests__/
 - **Staging**: Supabase staging + production build
 - **Production**: Supabase production + optimized assets
 
-### Build Optimization
-- **Bundle analysis** for size optimization
-- **Tree shaking** for unused code elimination
-- **Asset optimization** for faster loading
-- **CDN integration** for static assets
+### Modern Build Optimization (2025)
+- **Vite 7+ optimizations** with native ESM
+- **Advanced code splitting** with manual chunks
+- **Modern asset optimization** (AVIF, WebP, SVG compression)
+- **CSS optimization** with Lightning CSS
+- **JavaScript minification** with SWC
+- **Bundle analysis** with detailed dependency tracking
+- **Edge deployment** optimization for Vercel/Netlify
+- **Progressive Web App** features with Workbox
 
 ## Security Patterns
 
@@ -249,8 +340,12 @@ src/__tests__/
 - **Reusable components** for DRY principles
 - **Type safety** for maintainable code
 
-### Data Scalability
-- **Database indexing** for query performance
-- **Pagination** for large datasets
-- **Caching strategies** for reduced API calls
-- **Optimistic updates** for perceived performance
+### Modern Data Scalability (2025)
+- **Supabase indexing** with EXPLAIN ANALYZE optimization
+- **Cursor-based pagination** for infinite scrolling
+- **Smart caching** with TanStack Query v5 features
+- **Real-time optimistic updates** with conflict resolution
+- **Database connection pooling** via Supabase
+- **Edge functions** for data processing
+- **Vector search** for advanced filtering (if needed)
+- **Background sync** for offline data management
