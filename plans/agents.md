@@ -35,15 +35,11 @@ URL structure with modern routing conventions:
 | |__/ # Showcase List Page (showcase/index.tsx)
 | |__/$id # Dynamic Showcase Detail ($id.tsx) - Mini applications demonstrating solutions
 |
-|__/admin # Protected Admin Directory (with __layout.tsx for auth guard)
-| |__/ # Admin Dashboard (admin/index.tsx)
-| |__/categories # Categories Management (categories/index.tsx)
-| |__/categories/$id # Edit Category (categories/$id.tsx)
-| |__/categories/new # New Category (categories/new.tsx)
-| |__/subcategories # Subcategories Management (subcategories/index.tsx)
-| |__/subcategories/$id # Edit Subcategory (subcategories/$id.tsx)
-| |__/skills # Skills Management (skills/index.tsx)
-| |__/skills/$id # Edit Skill (skills/$id.tsx)
+|__/admin # Admin Directory
+| |__/ # Login Page (guarded when user is logged in)
+| |__/categories # Edit Categories Page
+| |__/subcategories # Edit Subcategories Page
+| |__/skills # Skill Page
 ```
 
 ## Modules
@@ -97,12 +93,14 @@ All routes use TanStack Router v2 patterns with clear separation of concerns:
 4. **Error Boundaries**: Handle route-level error states
 
 Modern file structure examples:
+
 - `src/routes/index.tsx` - Route definition with loaders
 - `src/pages/resume-page.tsx` - Page component with business logic
 - `src/components/layout/resume-layout.tsx` - Layout with error boundaries
 
 Each route leverages modern features:
+
 - **Type-safe navigation** with TanStack Router
-- **Suspense boundaries** for loading states  
+- **Suspense boundaries** for loading states
 - **Error boundaries** for graceful error handling
 - **Prefetching** for optimized performance
