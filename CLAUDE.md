@@ -105,6 +105,39 @@ DBML Source: ./plans/schema.dbml
 
 ## Architecture Documentation
 
-- **Setup Guide**: `./plans/initial-setup.md` - Modern 2025 setup instructions
-- **Architecture Patterns**: `./plans/patterns.md` - Comprehensive architectural guidance
+- **Setup Guide**: `./plans/initial-setup.md` - Modern 2025 setup instructions with progress tracking
+- **Architecture Patterns**: `./plans/patterns.md` - Comprehensive architectural guidance with implementation checklists
 - **Project Information**: `./plans/agents.md` - Detailed project context for development
+
+## 📊 Progress Tracking Guidance
+
+### How to Use the Progress Trackers
+
+1. **Phase-based Tracking** (`initial-setup.md`):
+   - Check off completed phases as you implement them
+   - Use verification checklists to ensure quality
+   - Track both high-level phases and detailed verification steps
+
+2. **Module-based Tracking** (`patterns.md`):
+   - Monitor implementation of Resume, Showcase, and Admin modules
+   - Track architectural component implementation
+   - Use detailed checklists for comprehensive coverage
+
+3. **Development Workflow**:
+   - Always update progress tracking when completing tasks
+   - Use checklists to ensure nothing is missed
+   - Reference verification steps for quality assurance
+
+### Progress Tracking Best Practices
+
+- ✅ **Mark completed items** immediately after finishing
+- 🔄 **Update status regularly** during development sessions  
+- 🎯 **Focus on one checklist section** at a time
+- 📝 **Document any deviations** from the planned approach
+- 🧪 **Verify completeness** using the detailed checklists
+
+### Quick Status Overview Locations
+
+- **Setup Progress**: See top of `initial-setup.md`
+- **Module Progress**: See top of `patterns.md`  
+- **Detailed Checklists**: See bottom sections of both files

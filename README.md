@@ -1,69 +1,116 @@
-# React + TypeScript + Vite
+# Interactive Resume Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, interactive resume application built with React 19 and cutting-edge 2025 web development patterns. This application demonstrates advanced frontend engineering skills through an interactive portfolio that goes beyond traditional static resumes.
 
-Currently, two official plugins are available:
+## 🎯 Project Purpose
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This application serves as a dynamic showcase for recruiters and hiring managers, providing:
+- **Interactive data visualization** of skills, experience, and education
+- **Advanced filtering and sorting** capabilities for resume data
+- **Live portfolio demonstrations** of complex UX/UI solutions
+- **Real-time content management** for keeping information current
 
-## Expanding the ESLint configuration
+## 🏗️ Architecture Overview
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Three Core Modules
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+#### 📄 Resume Module (Public)
+- Dynamic display of categorized skills with proficiency levels
+- Interactive timeline of professional experience
+- Filterable education and certification records
+- Real-time data updates from Supabase backend
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+#### 🚀 Showcase Module (Public) 
+- Portfolio of advanced frontend solutions
+- Embedded mini-applications demonstrating UX/UI problem-solving
+- Interactive code examples and technical explanations
+- Performance-optimized media galleries
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+#### ⚙️ Admin Module (Private)
+- Single-user authentication for content management
+- CRUD operations for all resume data entities
+- Real-time content updates with optimistic UI feedback
+- Advanced form validation and error handling
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 💻 Modern Tech Stack (2025)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Core Framework
+- **React 19** - Concurrent Features, useOptimistic, React Compiler
+- **TypeScript 5.8+** - Strict typing with enhanced project references
+- **Vite 7+** - Modern build tooling with optimized development experience
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Key Dependencies
+- **TanStack Router v2** - Type-safe file-based routing
+- **TanStack Query v5** - Advanced server state management with real-time features
+- **Supabase v2+** - Backend-as-a-Service with real-time database subscriptions
+- **React Hook Form** - Performant forms with minimal re-renders
+- **Zod** - TypeScript-first schema validation
+- **shadcn/ui** - Modern component library built on Radix UI
+- **Vitest** - Fast testing framework for modern applications
+
+## 🗄️ Data Model
+
+The application manages structured resume data through Supabase with the following entities:
+- **Categories** → **Subcategories** → **Skills** (hierarchical skill organization)
+- **Experiences** (professional work history with detailed descriptions)
+- **Education** (academic background and certifications)
+- **Showcase Items** (portfolio projects with interactive demonstrations)
+
+**Database Schema**: [View ERD](https://dbdiagram.io/d/Interactive-Resume-ERD-68be268261a46d388edeaaa9)
+
+## 🚀 Getting Started
+
+This project is currently in the planning and setup phase. To begin development:
+
+1. **Review Documentation**:
+   - `./plans/initial-setup.md` - Complete setup instructions with progress tracking
+   - `./plans/patterns.md` - Architectural patterns and implementation checklists
+   - `./plans/agents.md` - Project context and development patterns
+
+2. **Follow Setup Process**:
+   - Install modern dependencies (React 19, TanStack ecosystem, Supabase)
+   - Configure development environment with 2025 tooling
+   - Set up database schema and authentication
+
+3. **Implementation Approach**:
+   - Implement Resume Module first (core functionality)
+   - Build Showcase Module (portfolio features)
+   - Develop Admin Module (content management)
+
+## 🎨 Key Features
+
+### For Recruiters & Viewers
+- **Interactive Skills Matrix**: Filter and explore technical capabilities
+- **Dynamic Experience Timeline**: Drill down into role details and achievements
+- **Live Portfolio Demos**: Experience actual applications, not just screenshots
+- **Responsive Design**: Optimal viewing on all devices
+
+### For Content Management
+- **Real-time Updates**: Changes reflect immediately without deployment
+- **Rich Content Support**: Media uploads, formatted descriptions, and links
+- **Data Relationships**: Manage hierarchical skill categorization
+- **Performance Monitoring**: Track portfolio engagement and performance
+
+## 🔧 Development Philosophy
+
+This project demonstrates mastery of:
+- **Modern React Patterns**: Concurrent rendering, optimistic updates, advanced hooks
+- **Type Safety**: Comprehensive TypeScript usage with strict configurations
+- **Performance**: Code splitting, lazy loading, optimistic UI patterns
+- **User Experience**: Smooth interactions, loading states, error boundaries
+- **Architecture**: Clean separation of concerns, reusable patterns, scalable structure
+
+## 📊 Progress Tracking
+
+The project includes comprehensive progress tracking across all planning documents:
+- ✅ **Setup Progress**: Phase-by-phase implementation tracking
+- 🎯 **Module Progress**: Feature-level completion monitoring  
+- 📋 **Quality Checklists**: Verification steps for each component
+
+## 🤝 Single-User Application
+
+This application is designed for single-user content management, representing one individual's professional profile. The admin authentication supports one superuser who can manage all content through the integrated CMS.
+
+---
+
+*Built with modern 2025 web development patterns to showcase advanced frontend engineering capabilities.*
