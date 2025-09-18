@@ -77,6 +77,27 @@ This project is currently in the planning and setup phase. To begin development:
    - Build Showcase Module (portfolio features)
    - Develop Admin Module (content management)
 
+## 🔐 Auth Bootstrap
+
+After setting up the Supabase database and running the migration:
+
+1. **Create User Account**:
+   - Sign up through the Supabase dashboard or app signup flow
+   - Verify the `profiles` table row was automatically created
+
+2. **Grant Admin Access** (one-time setup):
+   ```sql
+   UPDATE public.profiles
+   SET is_admin = true
+   WHERE id = (SELECT id FROM auth.users WHERE email = '<YOUR_EMAIL>');
+   ```
+
+3. **Configure Environment**:
+   - Copy `.env.example` to `.env.local`
+   - Set your Supabase URL and anon key
+   - Configure Site URL in Supabase: `http://localhost:5175`
+   - Set Redirect URLs: `http://localhost:5175/*`
+
 ## 🎨 Key Features
 
 ### For Recruiters & Viewers
