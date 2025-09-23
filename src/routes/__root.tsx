@@ -1,4 +1,4 @@
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
 
 import { ErrorBoundary } from '@/components/error-boundary'
 import { GlobalLoading } from '@/components/global-loading'

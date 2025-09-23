@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+
 import { useCategories } from '@/hooks/useCategories'
 
 export const Route = createFileRoute('/')({
@@ -11,9 +12,7 @@ function IndexComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center p-8">
       <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold text-gray-900">
-          Interactive Resume
-        </h1>
+        <h1 className="mb-4 text-4xl font-bold text-gray-900">Interactive Resume</h1>
         <p className="mb-8 text-lg text-gray-600">
           Modern React 19 application with TanStack Router
         </p>
@@ -38,15 +37,10 @@ function IndexComponent() {
 
           {categories && categories.length > 0 && (
             <div className="space-y-2">
-              {categories.map((category) => (
-                <div
-                  key={category.id}
-                  className="rounded-lg border bg-white p-3 shadow-sm"
-                >
+              {categories.map(category => (
+                <div key={category.id} className="rounded-lg border bg-white p-3 shadow-sm">
                   <h3 className="font-medium text-gray-900">{category.name}</h3>
-                  <p className="text-sm text-gray-500">
-                    Sort order: {category.sort_order}
-                  </p>
+                  <p className="text-sm text-gray-500">Sort order: {category.sort_order}</p>
                 </div>
               ))}
             </div>

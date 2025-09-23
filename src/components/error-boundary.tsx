@@ -8,9 +8,7 @@ export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
     <div className="flex min-h-screen items-center justify-center p-4">
       <div className="max-w-md text-center">
         <div className="mb-4 text-6xl">⚠️</div>
-        <h1 className="mb-4 text-2xl font-bold text-red-600">
-          Oops! Something went wrong
-        </h1>
+        <h1 className="mb-4 text-2xl font-bold text-red-600">Oops! Something went wrong</h1>
         <p className="mb-6 text-gray-600">
           We encountered an unexpected error. Please try refreshing the page.
         </p>
