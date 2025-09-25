@@ -60,22 +60,70 @@ The application manages structured resume data through Supabase with the followi
 
 ## 🚀 Getting Started
 
-This project is currently in the planning and setup phase. To begin development:
+### Quick Start (Setup Complete)
 
-1. **Review Documentation**:
-   - `./plans/initial-setup.md` - Complete setup instructions with progress tracking
-   - `./plans/patterns.md` - Architectural patterns and implementation checklists
-   - `./plans/agents.md` - Project context and development patterns
+```bash
+# Clone and install dependencies
+npm install
 
-2. **Follow Setup Process**:
-   - Install modern dependencies (React 19, TanStack ecosystem, Supabase)
-   - Configure development environment with 2025 tooling
-   - Set up database schema and authentication
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your Supabase credentials
 
-3. **Implementation Approach**:
-   - Implement Resume Module first (core functionality)
-   - Build Showcase Module (portfolio features)
-   - Develop Admin Module (content management)
+# Start development server
+npm run dev
+
+# Visit: http://localhost:5173
+```
+
+### Development Commands
+
+```bash
+# Development
+npm run dev              # Start dev server with HMR
+npm run build           # Production build
+npm run preview         # Preview production build
+
+# Code Quality
+npm run lint            # ESLint with strict rules
+npm run lint:fix        # Auto-fix ESLint issues
+npm run format          # Format code with Prettier
+npm run format:check    # Check code formatting
+npm run type-check      # TypeScript compilation check
+
+# Testing
+npm run test            # Run tests with Vitest
+npm run test:ui         # Vitest UI interface
+npm run test:run        # Run tests once
+npm run test:coverage   # Test coverage report
+
+# TanStack Router
+npm run routes:generate # Generate route tree
+npm run routes:watch    # Watch route changes
+
+# Analysis & Utilities
+npm run analyze         # Bundle size analysis
+npm run clean          # Clean build artifacts
+```
+
+### Environment Setup
+
+1. **Supabase Configuration**:
+   ```bash
+   # .env.local
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+2. **Route Generation**:
+   - Routes auto-generate from `src/routes/` structure
+   - Run `npm run routes:generate` after adding new routes
+   - Post-install hook automatically generates routes
+
+3. **Documentation**:
+   - `./plans/initial-setup.md` - Complete setup guide (✅ Phase 1-7 complete)
+   - `./plans/patterns.md` - Architecture patterns and implementation
+   - `./CLAUDE.md` - Development workflow and commands
 
 ## 🔐 Auth Bootstrap
 
