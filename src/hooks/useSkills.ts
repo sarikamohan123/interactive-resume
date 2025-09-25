@@ -9,7 +9,7 @@ interface Skill {
   level: string | null
   years: number | null
   description: string | null
-  links: any
+  links: Record<string, string> | null
   sort_order: number
   created_at: string
 }

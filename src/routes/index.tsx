@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { useCategories } from '@/hooks/useCategories'
 import { useSubcategories } from '@/hooks/useSubcategories'
@@ -20,6 +20,15 @@ function IndexComponent() {
         <p className="mb-8 text-lg text-gray-600">
           Modern React 19 application with TanStack Router
         </p>
+
+        <div className="mb-8">
+          <Link
+            to="/resume"
+            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            View Resume
+          </Link>
+        </div>
 
         {/* Categories Section */}
         <div className="mb-8">
