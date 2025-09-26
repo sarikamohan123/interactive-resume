@@ -146,6 +146,55 @@ After setting up the Supabase database and running the migration:
    - Configure Site URL in Supabase: `http://localhost:5175`
    - Set Redirect URLs: `http://localhost:5175/*`
 
+## 🗄️ Database Setup & Data Population
+
+The application uses Supabase as the database backend. Follow these steps to set up your database:
+
+### 1. Database Schema Setup (First Time Only)
+1. Open your Supabase project dashboard
+2. Navigate to **SQL Editor** in the left sidebar
+3. Copy and paste the content from `database/migration.sql`
+4. Execute to create all tables and constraints
+
+### 2. Populate with Resume Data
+Choose one of the following data population options:
+
+#### Option A: Real Resume Data (Production)
+```sql
+-- Use database/sarika-resume-data.sql for production
+-- Copy entire file content to Supabase SQL Editor
+-- Execute to populate with real resume information
+-- Safe to re-run multiple times (idempotent)
+```
+
+#### Option B: Sample Data (Development/Testing)
+```sql
+-- Use database/sample-data.sql for testing
+-- Contains realistic sample data for development
+-- Good for UI development and feature testing
+```
+
+### 3. Data Script Features
+
+**Production Script (`sarika-resume-data.sql`)**:
+- ✅ **Idempotent**: Safe to run multiple times without duplicates
+- ✅ **No TRUNCATE**: Won't delete existing data
+- ✅ **No hardcoded UUIDs**: Uses name-based relationships
+- ✅ **Normalized data**: Consistent formatting for UI compatibility
+- ✅ **PII-free**: No personal information in version control
+
+### 4. Verification
+After running any data script:
+1. Check the **Messages tab** in Supabase SQL Editor for confirmation
+2. Look for "RESUME DATA - POPULATION COMPLETE" notice
+3. Verify the Resume Module displays data correctly in your application
+
+### 5. Database Files Overview
+- `database/migration.sql` - Database schema and table creation
+- `database/sarika-resume-data.sql` - Real resume data (idempotent, production-ready)
+- `database/sample-data.sql` - Generic sample data for development
+- `database/seed.sql` - Basic seed data for quick verification
+
 ## 🎨 Key Features
 
 ### For Recruiters & Viewers
