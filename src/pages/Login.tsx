@@ -48,8 +48,8 @@ export function Login() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-50 overflow-auto">
+      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md m-4">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
           <p className="mt-2 text-sm text-gray-600">Sign in to your account</p>
