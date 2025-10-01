@@ -6,6 +6,7 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 
+import { AuthProvider } from '@/contexts/AuthContext'
 import { queryClient } from '@/lib/queryClient'
 
 import { routeTree } from './routeTree.gen'
@@ -38,18 +39,20 @@ if (!rootElement) {
 // Modern React 19 rendering with Concurrent Features
 createRoot(rootElement).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <Suspense
-        fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}
-      >
-        <RouterProvider router={router} />
-      </Suspense>
-      {import.meta.env.DEV && (
-        <>
-          <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
-          <TanStackRouterDevtools router={router} position="bottom-left" />
-        </>
-      )}
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <Suspense
+          fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}
+        >
+          <RouterProvider router={router} />
+        </Suspense>
+        {import.meta.env.DEV && (
+          <>
+            <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
+            <TanStackRouterDevtools router={router} position="bottom-left" />
+          </>
+        )}
+      </QueryClientProvider>
+    </AuthProvider>
   </StrictMode>
 )
