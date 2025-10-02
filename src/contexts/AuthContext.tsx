@@ -50,17 +50,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Fetch profile function (reusable)
   const fetchProfile = async (userId: string) => {
     try {
-      const { data, error } = await supabase
+      console.log('Fetching profile for user:', userId)
+
+      const startTime = Date.now()
+      const result = await supabase
         .from('profiles')
         .select('id, email, full_name, is_admin, created_at, updated_at')
         .eq('id', userId)
         .maybeSingle()
 
+      const endTime = Date.now()
+      console.log(`Profile query took ${endTime - startTime}ms`)
+
+      const { data, error } = result
+
       if (error) {
-        console.error('Profile fetch error:', error.message)
+        console.error('Profile fetch error:', error.message, error)
         return null
       }
 
+      if (!data) {
+        console.warn('No profile found for user:', userId)
+        return null
+      }
+
+      console.log('Profile fetched successfully:', data)
       return data
     } catch (err) {
       console.error('Unexpected profile fetch error:', err)
@@ -85,23 +99,42 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     mounted.current = true
 
+    // Safety timeout to prevent infinite loading
+    const loadingTimeout = setTimeout(() => {
+      console.warn('Auth loading timeout - forcing loading to false')
+      if (mounted.current) {
+        setLoading(false)
+      }
+    }, 5000) // 5 second timeout
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!mounted.current) return
 
+      console.log('Session retrieved:', session ? 'Yes' : 'No')
       setSession(session)
       setUser(session?.user ?? null)
 
       // Fetch profile if user exists
       if (session?.user) {
-        fetchProfile(session.user.id).then((data) => {
-          if (mounted.current) {
-            setProfile(data)
-            setLoading(false)
-          }
-        })
+        fetchProfile(session.user.id)
+          .then((data) => {
+            if (mounted.current) {
+              setProfile(data)
+              setLoading(false)
+              clearTimeout(loadingTimeout)
+            }
+          })
+          .catch((err) => {
+            console.error('Profile fetch failed:', err)
+            if (mounted.current) {
+              setLoading(false) // Set loading false even on error
+              clearTimeout(loadingTimeout)
+            }
+          })
       } else {
         setLoading(false)
+        clearTimeout(loadingTimeout)
       }
     })
 
@@ -116,10 +149,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       // Fetch profile on sign in, clear on sign out
       if (session?.user) {
-        const data = await fetchProfile(session.user.id)
-        if (mounted.current) {
-          setProfile(data)
-          setLoading(false)
+        try {
+          const data = await fetchProfile(session.user.id)
+          if (mounted.current) {
+            setProfile(data)
+            setLoading(false)
+          }
+        } catch (err) {
+          console.error('Profile fetch failed in auth listener:', err)
+          if (mounted.current) {
+            setLoading(false)
+          }
         }
       } else {
         if (mounted.current) {
@@ -132,6 +172,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Cleanup on unmount
     return () => {
       mounted.current = false
+      clearTimeout(loadingTimeout)
       subscription.unsubscribe()
     }
   }, [])

@@ -2,6 +2,7 @@ import { createRootRoute, Outlet } from '@tanstack/react-router'
 
 import { ErrorBoundary } from '@/components/error-boundary'
 import { GlobalLoading } from '@/components/global-loading'
+import { Header } from '@/components/layout/Header'
 
 export const Route = createRootRoute({
   component: RootComponent,
@@ -12,7 +13,10 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <div className="min-h-screen bg-white font-sans antialiased">
-      <Outlet />
+      <Header />
+      <main>
+        <Outlet />
+      </main>
     </div>
   )
 }
