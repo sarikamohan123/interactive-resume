@@ -1,5 +1,5 @@
 import { useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useAuthContext } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
@@ -15,10 +15,11 @@ export function Login() {
   const [message, setMessage] = useState<string | null>(null)
 
   // Redirect if already logged in
-  if (user) {
-    navigate({ to: '/' })
-    return null
-  }
+  useEffect(() => {
+    if (user) {
+      navigate({ to: '/' })
+    }
+  }, [user, navigate])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()

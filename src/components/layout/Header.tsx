@@ -8,26 +8,31 @@ export function Header() {
   const { user, profile, isAdmin } = useAuthContext()
   const [loggingOut, setLoggingOut] = useState(false)
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setLoggingOut(true)
 
-    // Manually clear all Supabase auth data from localStorage
-    const keysToRemove: string[] = []
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i)
-      if (key?.startsWith('sb-')) {
-        keysToRemove.push(key)
-      }
-    }
-    keysToRemove.forEach(key => localStorage.removeItem(key))
+    try {
+      // Try proper signOut with a timeout (3 seconds)
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Logout timeout')), 3000)
+      )
 
-    // Also try to call signOut (won't wait for it)
-    supabase.auth.signOut().catch(err => console.error('Logout error:', err))
+      await Promise.race([supabase.auth.signOut(), timeoutPromise])
 
-    // Reload the page to clear all state
-    setTimeout(() => {
+      // Success - proper signout worked
       window.location.href = '/'
-    }, 100)
+    } catch (error) {
+      // Fallback: If signOut fails or times out, manually clear storage
+      console.warn('SignOut failed or timed out, using fallback method:', error)
+
+      // Manually clear all Supabase auth data from localStorage
+      Object.keys(localStorage)
+        .filter(key => key.startsWith('sb-'))
+        .forEach(key => localStorage.removeItem(key))
+
+      // Reload the page to clear all state
+      window.location.href = '/'
+    }
   }
 
   return (
