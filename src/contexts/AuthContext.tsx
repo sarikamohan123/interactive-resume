@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -50,22 +51,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Fetch profile function (reusable)
   const fetchProfile = async (userId: string) => {
     try {
-      console.log('Fetching profile for user:', userId)
-
-      const startTime = Date.now()
       const result = await supabase
         .from('profiles')
         .select('id, email, full_name, is_admin, created_at, updated_at')
         .eq('id', userId)
         .maybeSingle()
 
-      const endTime = Date.now()
-      console.log(`Profile query took ${endTime - startTime}ms`)
-
       const { data, error } = result
 
       if (error) {
-        console.error('Profile fetch error:', error.message, error)
+        console.error('Profile fetch error:', error.message)
         return null
       }
 
@@ -74,7 +69,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return null
       }
 
-      console.log('Profile fetched successfully:', data)
       return data
     } catch (err) {
       console.error('Unexpected profile fetch error:', err)
@@ -83,17 +77,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   // Manual refresh function for consumers
-  const refreshProfile = async () => {
-    if (!user?.id) {
-      console.warn('Cannot refresh profile: no user logged in')
-      return
-    }
+  const refreshProfile = useCallback(async () => {
+    if (!user?.id) return
 
     const data = await fetchProfile(user.id)
     if (mounted.current && data) {
       setProfile(data)
     }
-  }
+  }, [user?.id])
 
   // Initialize auth state
   useEffect(() => {
@@ -101,7 +92,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     // Safety timeout to prevent infinite loading
     const loadingTimeout = setTimeout(() => {
-      console.warn('Auth loading timeout - forcing loading to false')
       if (mounted.current) {
         setLoading(false)
       }
@@ -111,7 +101,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!mounted.current) return
 
-      console.log('Session retrieved:', session ? 'Yes' : 'No')
       setSession(session)
       setUser(session?.user ?? null)
 
@@ -141,13 +130,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Listen for auth state changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!mounted.current) return
 
       setSession(session)
       setUser(session?.user ?? null)
 
-      // Fetch profile on sign in, clear on sign out
+      // Handle different auth events
+      if (event === 'SIGNED_OUT') {
+        if (mounted.current) {
+          setProfile(null)
+          setLoading(false)
+        }
+        return
+      }
+
+      // Fetch profile on sign in
       if (session?.user) {
         try {
           const data = await fetchProfile(session.user.id)
@@ -156,7 +154,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             setLoading(false)
           }
         } catch (err) {
-          console.error('Profile fetch failed in auth listener:', err)
+          console.error('Profile fetch failed:', err)
           if (mounted.current) {
             setLoading(false)
           }
@@ -190,13 +188,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       isAdmin,
       refreshProfile,
     }),
-    [user, session, profile, loading, isAdmin]
+    [user, session, profile, loading, isAdmin, refreshProfile]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 // Custom hook with error handling
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuthContext() {
   const context = useContext(AuthContext)
   if (context === undefined) {

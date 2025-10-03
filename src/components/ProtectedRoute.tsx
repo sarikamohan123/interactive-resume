@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, requireAdmin = false }: ProtectedRouteProps) {
-  const { user, profile, loading, isAdmin } = useAuthContext()
+  const { user, loading, isAdmin } = useAuthContext()
 
   // Show loading spinner while checking auth
   if (loading) {

@@ -5,19 +5,29 @@ import { useAuthContext } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 
 export function Header() {
-  const { user, profile, isAdmin, loading } = useAuthContext()
+  const { user, profile, isAdmin } = useAuthContext()
   const [loggingOut, setLoggingOut] = useState(false)
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     setLoggingOut(true)
-    try {
-      await supabase.auth.signOut()
-      // Navigation will happen automatically via AuthContext
-    } catch (error) {
-      console.error('Logout error:', error)
-    } finally {
-      setLoggingOut(false)
+
+    // Manually clear all Supabase auth data from localStorage
+    const keysToRemove: string[] = []
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i)
+      if (key?.startsWith('sb-')) {
+        keysToRemove.push(key)
+      }
     }
+    keysToRemove.forEach(key => localStorage.removeItem(key))
+
+    // Also try to call signOut (won't wait for it)
+    supabase.auth.signOut().catch(err => console.error('Logout error:', err))
+
+    // Reload the page to clear all state
+    setTimeout(() => {
+      window.location.href = '/'
+    }, 100)
   }
 
   return (
