@@ -17,6 +17,12 @@ Track your setup progress with these checkboxes:
 - [x] **Phase 8**: Resume Module Implementation
 - [x] **Phase 9**: Authentication System Implementation
 - [x] **Phase 10**: Auth System Polish & Cleanup
+- [x] **Phase 11**: Admin CRUD Foundation (types, schemas, layout, toast notifications)
+- [x] **Phase 12**: Categories CRUD Implementation (complete with mutations)
+- [x] **Phase 13**: Subcategories CRUD Implementation (complete with category selector)
+- [x] **Phase 14**: Skills CRUD Implementation (schema, mutations, and admin page)
+- [x] **Phase 15**: Experiences CRUD Implementation (complete with date handling)
+- [x] **Phase 16**: Education CRUD Implementation (complete with date handling)
 
 ### Quick Status Check
 - [x] All dependencies installed successfully
@@ -53,6 +59,20 @@ Track your setup progress with these checkboxes:
 - [x] **ESLint warnings fixed (0 errors, 0 warnings)**
 - [x] **React hooks optimized (useCallback, proper deps)**
 - [x] **Navigation moved to useEffect (React best practices)**
+- [x] **Admin layout with navigation (Dashboard, Categories, Subcategories, Skills)**
+- [x] **Toast notifications (sonner) integrated**
+- [x] **Categories CRUD fully functional (create, edit, delete)**
+- [x] **Subcategory schema created (ready for CRUD)**
+- [x] **Subcategory mutations hook created**
+- [x] **Subcategories CRUD page implemented (with category selector)**
+- [x] **Skills schema created (Zod validation for all fields)**
+- [x] **Skills mutations hook created (with validation)**
+- [x] **Skills CRUD page implemented (with subcategory selector)**
+- [x] **Experiences schema and mutations created**
+- [x] **Experiences CRUD page implemented (with date handling)**
+- [x] **Education schema and mutations created**
+- [x] **Education CRUD page implemented (with date handling)**
+- [x] **All core Admin CRUD modules complete**
 - [ ] Full test suite implemented
 
 ## Phase 1: Core Dependencies Installation
@@ -658,14 +678,237 @@ npm run preview
 - [x] RLS reads working for all tables (categories, subcategories, skills)
 - [x] Supabase connection verified in both dev and production
 
-## Next Steps After Initial Setup
+## Phase 11: Admin CRUD Foundation
 
-1. **Implement Authentication**: Set up Supabase Auth integration
-2. **Create Base Components**: Implement core UI components using shadcn/ui
-3. **Implement Data Fetching**: Create API service functions and React Query hooks
-4. **Build Form Systems**: Implement universal form validation hooks
-5. **Create Route Guards**: Implement authentication-based route protection
-6. **Implement Core Features**: Start building Resume, Showcase, and Admin modules
+### Overview
+Set up the foundational infrastructure for admin CRUD operations.
+
+### ✅ Completed Implementation
+
+#### 1. Toast Notifications
+- **Installed sonner**: Modern toast notification library
+- **Integrated in root**: Added Toaster component to __root.tsx
+- **Configured position**: Top-right placement
+
+#### 2. Database Types (`src/types/database.ts`)
+- **Row types**: Types matching database tables exactly
+- **Insert types**: Types for creating new records (without id, timestamps)
+- **Update types**: Types for updating records (all fields optional except id)
+- **Tables covered**: Categories, Subcategories, Skills, Experiences, Education, Profiles
+
+#### 3. Validation Schemas (`src/schemas/`)
+- **Category schema**: Validation for name (1-100 chars) and sort_order
+- **Subcategory schema**: Validation for category_id (UUID), name, sort_order
+- **Type inference**: Export FormData types from schemas
+
+#### 4. Admin Layout (`src/routes/admin/__layout.tsx`)
+- **ProtectedRoute wrapper**: requireAdmin protection
+- **Navigation tabs**: Dashboard, Categories, Subcategories, Skills
+- **Active state styling**: Blue highlight for current tab
+- **Back to Site link**: Quick navigation to public site
+
+## Phase 12: Categories CRUD Implementation
+
+### Overview
+Complete CRUD operations for Categories with modern patterns.
+
+### ✅ Completed Implementation
+
+#### 1. Category Mutations Hook (`src/hooks/mutations/useCategoryMutations.ts`)
+- **Create mutation**: Insert new category with cache invalidation
+- **Update mutation**: Update existing category by ID
+- **Delete mutation**: Remove category with cascade implications
+- **Toast integration**: Success/error notifications
+- **TanStack Query**: Proper cache management and optimistic updates
+
+#### 2. Categories Page (`src/routes/admin/categories.index.tsx`)
+- **Table view**: Display all categories with name and sort_order
+- **Create dialog**: Form for new categories
+- **Edit dialog**: Pre-populated form for updates
+- **Delete confirmation**: Warning about cascade deletion
+- **Loading states**: Proper loading and error handling
+- **Form validation**: React Hook Form + Zod integration
+- **Empty state**: Helpful message when no categories exist
+
+#### 3. Features Implemented
+- ✅ List all categories in sortable table
+- ✅ Create new categories via dialog
+- ✅ Edit existing categories
+- ✅ Delete categories with confirmation
+- ✅ Form validation with error messages
+- ✅ Loading states during mutations
+- ✅ Toast notifications for all operations
+- ✅ Proper error handling
+
+## Phase 13: Subcategories CRUD Implementation
+
+### Overview
+Complete CRUD operations for Subcategories with category selector integration.
+
+### ✅ Completed Implementation
+
+#### 1. Subcategory Mutations Hook (`src/hooks/mutations/useSubcategoryMutations.ts`)
+- **Create mutation**: Insert new subcategory with cache invalidation
+- **Update mutation**: Update existing subcategory by ID
+- **Delete mutation**: Remove subcategory with validation (checks for linked skills)
+- **Toast integration**: Success/error notifications
+- **TanStack Query**: Proper cache management and optimistic updates
+
+#### 2. Subcategories Page (`src/routes/admin/subcategories.index.tsx`)
+- **Table view**: Display all subcategories with category name, name, and sort_order
+- **Category selector**: Dropdown to select parent category
+- **Create dialog**: Form for new subcategories with category selection
+- **Edit dialog**: Pre-populated form for updates
+- **Delete confirmation**: Warning about linked skills
+- **Loading states**: Proper loading and error handling
+- **Form validation**: React Hook Form + Zod integration
+- **Empty state**: Helpful message when no subcategories exist
+- **Category warning**: Alert when no categories exist
+
+#### 3. Features Implemented
+- ✅ List all subcategories with parent category names
+- ✅ Create new subcategories via dialog
+- ✅ Category selector (Select component)
+- ✅ Edit existing subcategories
+- ✅ Delete subcategories with skill link validation
+- ✅ Form validation with error messages
+- ✅ Loading states during mutations
+- ✅ Toast notifications for all operations
+- ✅ Proper error handling
+- ✅ Helper function to resolve category names
+
+## Phase 14: Skills CRUD Implementation
+
+### Overview
+Complete CRUD operations for Skills with subcategory selector and advanced field management.
+
+### ✅ Completed Implementation
+
+#### 1. Skills Schema (`src/schemas/skill.ts`)
+- **Name validation**: 1-100 characters, required
+- **Level validation**: Optional string (max 50 chars)
+- **Years validation**: Optional number (0-50 range)
+- **Description validation**: Optional text (max 500 characters)
+- **Links validation**: Optional JSON object for external resources
+- **Sort order**: Number field for ordering
+- **Subcategory ID**: UUID reference, required
+
+#### 2. Skills Mutations Hook (`src/hooks/mutations/useSkillMutations.ts`)
+- **Create mutation**: Insert new skill with cache invalidation
+- **Update mutation**: Update existing skill by ID
+- **Delete mutation**: Remove skill (no cascade concerns)
+- **Toast integration**: Success/error notifications
+- **TanStack Query**: Proper cache management
+
+#### 3. Skills Page (`src/routes/admin/skills.index.tsx`)
+- **Table view**: Display all skills with category, subcategory, name, level, years
+- **Subcategory selector**: Dropdown with category grouping (e.g., "Frontend → React")
+- **Create dialog**: Form for new skills with all fields
+- **Edit dialog**: Pre-populated form for updates
+- **Delete confirmation**: Simple confirmation dialog
+- **Advanced fields**: Level dropdown, years input, description textarea
+- **Empty state**: Helpful message when no skills exist
+- **Subcategory warning**: Alert when no subcategories exist
+
+#### 4. Features Implemented
+- ✅ List all skills with parent subcategory and category names
+- ✅ Create new skills via dialog
+- ✅ Subcategory selector with category grouping
+- ✅ Edit existing skills
+- ✅ Delete skills with confirmation
+- ✅ Form validation with error messages
+- ✅ Loading states during mutations
+- ✅ Toast notifications for all operations
+- ✅ Proper error handling
+- ✅ Helper function to resolve subcategory and category names
+
+## Phase 15: Experiences CRUD Implementation
+
+### Overview
+Complete CRUD operations for work experiences with date handling.
+
+### ✅ Completed Implementation
+
+#### 1. Experience Schema (`src/schemas/experience.ts`)
+- **Company validation**: 1-200 characters, required
+- **Role validation**: 1-200 characters, required
+- **Start date**: Required date field
+- **End date**: Optional date field (null for current positions)
+- **Bullets**: Optional JSON object for experience details
+
+#### 2. Experience Mutations Hook (`src/hooks/mutations/useExperienceMutations.ts`)
+- **Create mutation**: Insert new experience with cache invalidation
+- **Update mutation**: Update existing experience by ID
+- **Delete mutation**: Remove experience
+- **Toast integration**: Success/error notifications
+- **TanStack Query**: Proper cache management
+
+#### 3. Experiences Page (`src/routes/admin/experiences.index.tsx`)
+- **Table view**: Display company, role, start date, end date
+- **Date formatting**: "Present" for current roles, "MMM YYYY" format
+- **Create dialog**: Form with date pickers
+- **Edit dialog**: Pre-populated form for updates
+- **Delete confirmation**: Confirmation dialog
+- **Empty state**: Helpful message when no experiences exist
+
+#### 4. Features Implemented
+- ✅ List all experiences with formatted dates
+- ✅ Create new experiences via dialog
+- ✅ Date pickers for start/end dates
+- ✅ "Present" handling for current positions
+- ✅ Edit existing experiences
+- ✅ Delete experiences with confirmation
+- ✅ Form validation with error messages
+- ✅ Loading states during mutations
+- ✅ Toast notifications for all operations
+
+## Phase 16: Education CRUD Implementation
+
+### Overview
+Complete CRUD operations for education records with date handling.
+
+### ✅ Completed Implementation
+
+#### 1. Education Schema (`src/schemas/education.ts`)
+- **School validation**: 1-200 characters, required
+- **Degree validation**: 1-200 characters, required
+- **Start date**: Required date field
+- **End date**: Optional date field (null for in-progress education)
+- **Details**: Optional JSON object for additional information
+
+#### 2. Education Mutations Hook (`src/hooks/mutations/useEducationMutations.ts`)
+- **Create mutation**: Insert new education record with cache invalidation
+- **Update mutation**: Update existing education by ID
+- **Delete mutation**: Remove education record
+- **Toast integration**: Success/error notifications
+- **TanStack Query**: Proper cache management
+
+#### 3. Education Page (`src/routes/admin/education.index.tsx`)
+- **Table view**: Display school, degree, start date, end date
+- **Date formatting**: "Present" for in-progress education, "MMM YYYY" format
+- **Create dialog**: Form with date pickers
+- **Edit dialog**: Pre-populated form for updates
+- **Delete confirmation**: Confirmation dialog
+- **Empty state**: Helpful message when no education records exist
+
+#### 4. Features Implemented
+- ✅ List all education records with formatted dates
+- ✅ Create new education via dialog
+- ✅ Date pickers for start/end dates
+- ✅ "Present" handling for in-progress education
+- ✅ Edit existing education records
+- ✅ Delete education with confirmation
+- ✅ Form validation with error messages
+- ✅ Loading states during mutations
+- ✅ Toast notifications for all operations
+
+## Next Steps After Current Setup
+
+1. ✅ **Admin CRUD Complete**: All core CRUD modules implemented (Categories, Subcategories, Skills, Experiences, Education)
+2. **Showcase Module**: Build portfolio showcase features
+3. **Testing**: Add comprehensive test coverage
+4. **Performance Optimization**: Implement React 19 features and optimizations
+5. **Deployment**: Set up CI/CD and production deployment
 
 ## Phase 9: Authentication System Implementation
 

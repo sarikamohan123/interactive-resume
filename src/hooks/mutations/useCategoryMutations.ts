@@ -50,6 +50,32 @@ export function useCategoryMutations() {
 
   const deleteCategory = useMutation({
     mutationFn: async (id: string) => {
+      // Check if category has linked subcategories
+      const { data: subcategories, error: subCheckError } = await supabase
+        .from('subcategories')
+        .select('id')
+        .eq('category_id', id)
+        .limit(1)
+
+      if (subCheckError) throw subCheckError
+
+      if (subcategories && subcategories.length > 0) {
+        throw new Error('Cannot delete category with linked subcategories')
+      }
+
+      // Check if category has linked skills
+      const { data: skills, error: skillCheckError } = await supabase
+        .from('skills')
+        .select('id')
+        .eq('category_id', id)
+        .limit(1)
+
+      if (skillCheckError) throw skillCheckError
+
+      if (skills && skills.length > 0) {
+        throw new Error('Cannot delete category with linked skills')
+      }
+
       const { error } = await supabase.from('categories').delete().eq('id', id)
 
       if (error) throw error
