@@ -16,6 +16,8 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as R404RouteImport } from './routes/404'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as Admin_layoutRouteImport } from './routes/admin/__layout'
+import { Route as AdminSubcategoriesIndexRouteImport } from './routes/admin/subcategories.index'
+import { Route as AdminSkillsIndexRouteImport } from './routes/admin/skills.index'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/admin/categories.index'
 
 const ResumeRoute = ResumeRouteImport.update({
@@ -52,6 +54,16 @@ const Admin_layoutRoute = Admin_layoutRouteImport.update({
   id: '/__layout',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminSubcategoriesIndexRoute = AdminSubcategoriesIndexRouteImport.update({
+  id: '/subcategories/',
+  path: '/subcategories/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSkillsIndexRoute = AdminSkillsIndexRouteImport.update({
+  id: '/skills/',
+  path: '/skills/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
   id: '/categories/',
   path: '/categories/',
@@ -66,6 +78,8 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/admin/skills': typeof AdminSkillsIndexRoute
+  '/admin/subcategories': typeof AdminSubcategoriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,6 +89,8 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/admin/skills': typeof AdminSkillsIndexRoute
+  '/admin/subcategories': typeof AdminSubcategoriesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,6 +102,8 @@ export interface FileRoutesById {
   '/resume': typeof ResumeRoute
   '/admin/__layout': typeof Admin_layoutRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
+  '/admin/skills/': typeof AdminSkillsIndexRoute
+  '/admin/subcategories/': typeof AdminSubcategoriesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,6 +115,8 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/resume'
     | '/admin/categories'
+    | '/admin/skills'
+    | '/admin/subcategories'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -106,6 +126,8 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/resume'
     | '/admin/categories'
+    | '/admin/skills'
+    | '/admin/subcategories'
   id:
     | '__root__'
     | '/'
@@ -116,6 +138,8 @@ export interface FileRouteTypes {
     | '/resume'
     | '/admin/__layout'
     | '/admin/categories/'
+    | '/admin/skills/'
+    | '/admin/subcategories/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -178,6 +202,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Admin_layoutRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/subcategories/': {
+      id: '/admin/subcategories/'
+      path: '/subcategories'
+      fullPath: '/admin/subcategories'
+      preLoaderRoute: typeof AdminSubcategoriesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/skills/': {
+      id: '/admin/skills/'
+      path: '/skills'
+      fullPath: '/admin/skills'
+      preLoaderRoute: typeof AdminSkillsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/categories/': {
       id: '/admin/categories/'
       path: '/categories'
@@ -191,11 +229,15 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   Admin_layoutRoute: typeof Admin_layoutRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
+  AdminSkillsIndexRoute: typeof AdminSkillsIndexRoute
+  AdminSubcategoriesIndexRoute: typeof AdminSubcategoriesIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   Admin_layoutRoute: Admin_layoutRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
+  AdminSkillsIndexRoute: AdminSkillsIndexRoute,
+  AdminSubcategoriesIndexRoute: AdminSubcategoriesIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
