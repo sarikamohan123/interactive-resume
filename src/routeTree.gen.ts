@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as R404RouteImport } from './routes/404'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Admin_layoutRouteImport } from './routes/admin/__layout'
 
 const ResumeRoute = ResumeRouteImport.update({
   id: '/resume',
@@ -46,11 +47,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Admin_layoutRoute = Admin_layoutRouteImport.update({
+  id: '/__layout',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/404': typeof R404Route
-  '/admin': typeof AdminRoute
+  '/admin': typeof Admin_layoutRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
@@ -58,7 +63,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/404': typeof R404Route
-  '/admin': typeof AdminRoute
+  '/admin': typeof Admin_layoutRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
@@ -67,10 +72,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/404': typeof R404Route
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/admin/__layout': typeof Admin_layoutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -85,12 +91,13 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/resume'
+    | '/admin/__layout'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R404Route: typeof R404Route
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResumeRoute: typeof ResumeRoute
@@ -140,13 +147,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/__layout': {
+      id: '/admin/__layout'
+      path: ''
+      fullPath: '/admin'
+      preLoaderRoute: typeof Admin_layoutRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  Admin_layoutRoute: typeof Admin_layoutRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  Admin_layoutRoute: Admin_layoutRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R404Route: R404Route,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResumeRoute: ResumeRoute,

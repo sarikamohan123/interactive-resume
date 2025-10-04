@@ -1,5 +1,6 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { useEffect } from 'react'
+import { Toaster } from 'sonner'
 
 import { ErrorBoundary } from '@/components/error-boundary'
 import { GlobalLoading } from '@/components/global-loading'
@@ -30,6 +31,7 @@ function RootComponent() {
       <main>
         <Outlet />
       </main>
+      <Toaster position="top-right" richColors />
     </div>
   )
 }
