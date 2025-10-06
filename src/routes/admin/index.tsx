@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
 import { Folder, Network, Code, Briefcase, GraduationCap } from 'lucide-react'
 import { formatDistanceToNowStrict } from 'date-fns'
 
@@ -140,34 +139,9 @@ function AdminDashboard() {
     return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text
   }
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: 'easeOut',
-      },
-    },
-  }
-
   // Skeleton loading card
   const SkeletonCard = () => (
-    <motion.div
-      variants={itemVariants}
-      className="bg-white rounded-lg shadow-md p-6 border border-gray-100"
-    >
+    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100 animate-pulse">
       <div className="flex items-start justify-between">
         <div className="flex-1 space-y-3">
           <div className="flex items-center gap-2">
@@ -181,7 +155,7 @@ function AdminDashboard() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 
   return (
@@ -198,20 +172,12 @@ function AdminDashboard() {
       </div>
 
       {/* Summary Cards */}
-      <motion.div
-        className="grid auto-rows-fr grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
+      <div className="grid auto-rows-fr grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* Categories Card */}
         {categoriesLoading ? (
           <SkeletonCard />
         ) : (
-          <motion.div
-            variants={itemVariants}
-            whileHover={{ scale: 1.02, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-            className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300"
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
           >
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -232,17 +198,14 @@ function AdminDashboard() {
               </div>
             </div>
           </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Subcategories Card */}
         {subcategoriesLoading ? (
           <SkeletonCard />
         ) : (
-          <motion.div
-            variants={itemVariants}
-            whileHover={{ scale: 1.02, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-            className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300"
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
           >
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -263,17 +226,14 @@ function AdminDashboard() {
               </div>
             </div>
           </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Skills Card */}
         {skillsLoading ? (
           <SkeletonCard />
         ) : (
-          <motion.div
-            variants={itemVariants}
-            whileHover={{ scale: 1.02, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-            className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300"
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
           >
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -294,17 +254,14 @@ function AdminDashboard() {
               </div>
             </div>
           </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Experiences Card */}
         {experiencesLoading ? (
           <SkeletonCard />
         ) : (
-          <motion.div
-            variants={itemVariants}
-            whileHover={{ scale: 1.02, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-            className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300"
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
           >
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -325,17 +282,13 @@ function AdminDashboard() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
   )}
         {/* Education Card */}
       {educationLoading ? (
     <SkeletonCard />
   ) : (
-    <motion.div
-      variants={itemVariants}
-      whileHover={{ scale: 1.02, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-      className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all        
-  duration-300"
+    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
     >
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -356,15 +309,12 @@ function AdminDashboard() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
   )}
-      </motion.div>
+      </div>
 
       {/* Quick Actions */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6, duration: 0.5 }}
+      <div className="animate-in fade-in slide-in-from-bottom-4 duration-500"
       >
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -417,7 +367,7 @@ function AdminDashboard() {
             </Button>
           </Link>
         </div>
-      </motion.div>
+      </div>
     </div>
   )
 }
