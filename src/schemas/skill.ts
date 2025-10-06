@@ -2,7 +2,11 @@ import { z } from 'zod'
 
 export const skillSchema = z.object({
   subcategory_id: z.string().uuid('Please select a valid subcategory'),
-  name: z.string().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
+  name: z
+    .string()
+    .min(1, 'Name is required')
+    .max(100, 'Name must be less than 100 characters')
+    .trim(),
   level: z.string().max(50, 'Level must be less than 50 characters').optional().nullable(),
   years: z.coerce.number().min(0, 'Years must be 0 or greater').max(50, 'Years must be 50 or less').optional().nullable(),
   description: z
@@ -11,7 +15,7 @@ export const skillSchema = z.object({
     .optional()
     .nullable(),
   links: z.record(z.unknown()).optional().nullable(),
-  sort_order: z.coerce.number().int(),
+  sort_order: z.coerce.number().int().min(0, 'Sort order must be positive').default(0),
 })
 
 export type SkillFormData = z.infer<typeof skillSchema>

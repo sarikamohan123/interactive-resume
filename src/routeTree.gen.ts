@@ -15,9 +15,12 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as R404RouteImport } from './routes/404'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as Admin_layoutRouteImport } from './routes/admin/__layout'
 import { Route as AdminSubcategoriesIndexRouteImport } from './routes/admin/subcategories.index'
 import { Route as AdminSkillsIndexRouteImport } from './routes/admin/skills.index'
+import { Route as AdminExperiencesIndexRouteImport } from './routes/admin/experiences.index'
+import { Route as AdminEducationIndexRouteImport } from './routes/admin/education.index'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/admin/categories.index'
 
 const ResumeRoute = ResumeRouteImport.update({
@@ -50,6 +53,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const Admin_layoutRoute = Admin_layoutRouteImport.update({
   id: '/__layout',
   getParentRoute: () => AdminRoute,
@@ -62,6 +70,16 @@ const AdminSubcategoriesIndexRoute = AdminSubcategoriesIndexRouteImport.update({
 const AdminSkillsIndexRoute = AdminSkillsIndexRouteImport.update({
   id: '/skills/',
   path: '/skills/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminExperiencesIndexRoute = AdminExperiencesIndexRouteImport.update({
+  id: '/experiences/',
+  path: '/experiences/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEducationIndexRoute = AdminEducationIndexRouteImport.update({
+  id: '/education/',
+  path: '/education/',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
@@ -77,18 +95,23 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/admin/education': typeof AdminEducationIndexRoute
+  '/admin/experiences': typeof AdminExperiencesIndexRoute
   '/admin/skills': typeof AdminSkillsIndexRoute
   '/admin/subcategories': typeof AdminSubcategoriesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/404': typeof R404Route
-  '/admin': typeof Admin_layoutRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/admin': typeof AdminIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/admin/education': typeof AdminEducationIndexRoute
+  '/admin/experiences': typeof AdminExperiencesIndexRoute
   '/admin/skills': typeof AdminSkillsIndexRoute
   '/admin/subcategories': typeof AdminSubcategoriesIndexRoute
 }
@@ -101,7 +124,10 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
   '/admin/__layout': typeof Admin_layoutRoute
+  '/admin/': typeof AdminIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
+  '/admin/education/': typeof AdminEducationIndexRoute
+  '/admin/experiences/': typeof AdminExperiencesIndexRoute
   '/admin/skills/': typeof AdminSkillsIndexRoute
   '/admin/subcategories/': typeof AdminSubcategoriesIndexRoute
 }
@@ -114,18 +140,23 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/resume'
+    | '/admin/'
     | '/admin/categories'
+    | '/admin/education'
+    | '/admin/experiences'
     | '/admin/skills'
     | '/admin/subcategories'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/404'
-    | '/admin'
     | '/login'
     | '/reset-password'
     | '/resume'
+    | '/admin'
     | '/admin/categories'
+    | '/admin/education'
+    | '/admin/experiences'
     | '/admin/skills'
     | '/admin/subcategories'
   id:
@@ -137,7 +168,10 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/resume'
     | '/admin/__layout'
+    | '/admin/'
     | '/admin/categories/'
+    | '/admin/education/'
+    | '/admin/experiences/'
     | '/admin/skills/'
     | '/admin/subcategories/'
   fileRoutesById: FileRoutesById
@@ -195,6 +229,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/__layout': {
       id: '/admin/__layout'
       path: ''
@@ -216,6 +257,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSkillsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/experiences/': {
+      id: '/admin/experiences/'
+      path: '/experiences'
+      fullPath: '/admin/experiences'
+      preLoaderRoute: typeof AdminExperiencesIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/education/': {
+      id: '/admin/education/'
+      path: '/education'
+      fullPath: '/admin/education'
+      preLoaderRoute: typeof AdminEducationIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/categories/': {
       id: '/admin/categories/'
       path: '/categories'
@@ -228,14 +283,20 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   Admin_layoutRoute: typeof Admin_layoutRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
+  AdminEducationIndexRoute: typeof AdminEducationIndexRoute
+  AdminExperiencesIndexRoute: typeof AdminExperiencesIndexRoute
   AdminSkillsIndexRoute: typeof AdminSkillsIndexRoute
   AdminSubcategoriesIndexRoute: typeof AdminSubcategoriesIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   Admin_layoutRoute: Admin_layoutRoute,
+  AdminIndexRoute: AdminIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
+  AdminEducationIndexRoute: AdminEducationIndexRoute,
+  AdminExperiencesIndexRoute: AdminExperiencesIndexRoute,
   AdminSkillsIndexRoute: AdminSkillsIndexRoute,
   AdminSubcategoriesIndexRoute: AdminSubcategoriesIndexRoute,
 }
