@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { supabase } from '@/lib/supabase'
+import { useAuthContext } from '@/contexts/AuthContext'
 
 interface Category {
   id: string
@@ -10,6 +11,8 @@ interface Category {
 }
 
 export function useCategories() {
+  const { authReady } = useAuthContext()
+
   return useQuery({
     queryKey: ['categories'],
     queryFn: async (): Promise<Category[]> => {
@@ -24,6 +27,7 @@ export function useCategories() {
 
       return data || []
     },
+    enabled: authReady, // Only query when session restoration is complete
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 }

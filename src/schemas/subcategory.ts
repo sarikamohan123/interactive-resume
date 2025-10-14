@@ -7,7 +7,7 @@ export const subcategorySchema = z.object({
     .min(1, 'Name is required')
     .max(100, 'Name must be less than 100 characters')
     .trim(),
-  sort_order: z.coerce.number().int().min(0).default(0),
+  sort_order: z.number().int().min(0),
 })
 
 export type SubcategoryFormData = z.infer<typeof subcategorySchema>

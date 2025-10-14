@@ -1,18 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { supabase } from '@/lib/supabase'
-
-interface Education {
-  id: string
-  school: string
-  degree: string
-  start_date: string
-  end_date: string | null
-  details: Record<string, unknown> | null
-  created_at: string
-}
+import { useAuthContext } from '@/contexts/AuthContext'
+import type { Education } from '@/types/database'
 
 export function useEducation() {
+  const { authReady } = useAuthContext()
+
   return useQuery({
     queryKey: ['education'],
     queryFn: async (): Promise<Education[]> => {
@@ -27,6 +21,7 @@ export function useEducation() {
 
       return data || []
     },
+    enabled: authReady, // Only query when session restoration is complete
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 }

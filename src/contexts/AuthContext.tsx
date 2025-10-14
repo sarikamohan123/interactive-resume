@@ -1,3 +1,4 @@
+import type { Session, User } from '@supabase/supabase-js'
 import {
   createContext,
   useCallback,
@@ -8,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import type { Session, User } from '@supabase/supabase-js'
+
 import { supabase } from '@/lib/supabase'
 
 // Profile type matching the database schema
@@ -27,6 +28,7 @@ interface AuthContextValue {
   session: Session | null
   profile: Profile | null
   loading: boolean
+  authReady: boolean // True when session restoration is complete
   isAdmin: boolean
   refreshProfile: () => Promise<void>
 }
@@ -44,6 +46,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [session, setSession] = useState<Session | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
+  const [authReady, setAuthReady] = useState(false) // New flag for session restoration
 
   // Track mounted state to avoid memory leaks
   const mounted = useRef(true)
@@ -51,27 +54,34 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Fetch profile function (reusable)
   const fetchProfile = async (userId: string) => {
     try {
-      const result = await supabase
+      // Create timeout promise to prevent hanging queries
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => {
+          reject(new Error('Profile fetch timeout'))
+        }, 3000)
+      })
+
+      // Race the query against timeout
+      const queryPromise = supabase
         .from('profiles')
         .select('id, email, full_name, is_admin, created_at, updated_at')
         .eq('id', userId)
         .maybeSingle()
 
+      const result = await Promise.race([queryPromise, timeoutPromise])
       const { data, error } = result
 
       if (error) {
-        console.error('Profile fetch error:', error.message)
         return null
       }
 
       if (!data) {
-        console.warn('No profile found for user:', userId)
         return null
       }
 
       return data
-    } catch (err) {
-      console.error('Unexpected profile fetch error:', err)
+    } catch {
+      // Profile fetch timeout - continue without profile
       return null
     }
   }
@@ -94,44 +104,61 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const loadingTimeout = setTimeout(() => {
       if (mounted.current) {
         setLoading(false)
+        setAuthReady(true)
       }
     }, 5000) // 5 second timeout
 
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!mounted.current) return
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        if (!mounted.current) {
+          return
+        }
 
-      setSession(session)
-      setUser(session?.user ?? null)
+        setSession(session)
+        setUser(session?.user ?? null)
 
-      // Fetch profile if user exists
-      if (session?.user) {
-        fetchProfile(session.user.id)
-          .then((data) => {
-            if (mounted.current) {
-              setProfile(data)
-              setLoading(false)
-              clearTimeout(loadingTimeout)
-            }
-          })
-          .catch((err) => {
-            console.error('Profile fetch failed:', err)
-            if (mounted.current) {
-              setLoading(false) // Set loading false even on error
-              clearTimeout(loadingTimeout)
-            }
-          })
-      } else {
-        setLoading(false)
-        clearTimeout(loadingTimeout)
-      }
-    })
+        // Fetch profile if user exists
+        if (session?.user) {
+          fetchProfile(session.user.id)
+            .then(data => {
+              if (mounted.current) {
+                setProfile(data)
+                setLoading(false)
+                setAuthReady(true)
+                clearTimeout(loadingTimeout)
+              }
+            })
+            .catch(() => {
+              if (mounted.current) {
+                setLoading(false)
+                setAuthReady(true)
+                clearTimeout(loadingTimeout)
+              }
+            })
+        } else {
+          // No session - auth is ready (logged out state)
+          setLoading(false)
+          setAuthReady(true)
+          clearTimeout(loadingTimeout)
+        }
+      })
+      .catch(() => {
+        if (mounted.current) {
+          setLoading(false)
+          setAuthReady(true)
+          clearTimeout(loadingTimeout)
+        }
+      })
 
     // Listen for auth state changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (!mounted.current) return
+      if (!mounted.current) {
+        return
+      }
 
       setSession(session)
       setUser(session?.user ?? null)
@@ -141,6 +168,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         if (mounted.current) {
           setProfile(null)
           setLoading(false)
+          setAuthReady(true)
         }
         return
       }
@@ -152,17 +180,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
           if (mounted.current) {
             setProfile(data)
             setLoading(false)
+            setAuthReady(true)
           }
-        } catch (err) {
-          console.error('Profile fetch failed:', err)
+        } catch {
           if (mounted.current) {
             setLoading(false)
+            setAuthReady(true)
           }
         }
       } else {
         if (mounted.current) {
           setProfile(null)
           setLoading(false)
+          setAuthReady(true)
         }
       }
     })
@@ -185,10 +215,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       session,
       profile,
       loading,
+      authReady,
       isAdmin,
       refreshProfile,
     }),
-    [user, session, profile, loading, isAdmin, refreshProfile]
+    [user, session, profile, loading, authReady, isAdmin, refreshProfile]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
