@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import { LogOut } from 'lucide-react'
 import { useState } from 'react'
 
 import { useAuthContext } from '@/contexts/AuthContext'
@@ -53,15 +54,19 @@ export function Header() {
           <nav className="flex items-center space-x-6">
             <Link
               to="/"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
-              activeProps={{ className: 'text-blue-600' }}
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+              activeProps={{
+                className: 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
+              }}
             >
               Home
             </Link>
             <Link
               to="/resume"
-              className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
-              activeProps={{ className: 'text-blue-600' }}
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+              activeProps={{
+                className: 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
+              }}
             >
               Resume
             </Link>
@@ -70,8 +75,10 @@ export function Header() {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors flex items-center space-x-1"
-                activeProps={{ className: 'text-blue-600' }}
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 flex items-center space-x-1 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                activeProps={{
+                  className: 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
+                }}
               >
                 <span>Admin</span>
                 <span className="px-2 py-0.5 text-xs font-semibold text-white bg-purple-600 rounded">
@@ -102,15 +109,17 @@ export function Header() {
                 <button
                   onClick={handleLogout}
                   disabled={loggingOut}
-                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                  title="Logout"
+                  aria-label="Logout"
                 >
-                  {loggingOut ? 'Logging out...' : 'Logout'}
+                  <LogOut className="w-5 h-5" />
                 </button>
               </div>
             ) : (
               <Link
                 to="/login"
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
               >
                 Login
               </Link>

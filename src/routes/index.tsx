@@ -3,6 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCategories } from '@/hooks/useCategories'
 import { useSubcategories } from '@/hooks/useSubcategories'
 import { useSkills } from '@/hooks/useSkills'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const Route = createFileRoute('/')({
   component: IndexComponent,
@@ -35,9 +36,13 @@ function IndexComponent() {
           <h2 className="mb-4 text-xl font-semibold text-gray-800">Categories</h2>
 
           {categoriesLoading && (
-            <div className="flex items-center justify-center">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
-              <span className="ml-2 text-gray-600">Loading categories...</span>
+            <div className="space-y-3">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="rounded-lg border bg-white p-3 shadow-sm space-y-2">
+                  <Skeleton className="h-5 w-32" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+              ))}
             </div>
           )}
 
@@ -67,18 +72,30 @@ function IndexComponent() {
         {/* RLS Test Section */}
         <div className="mb-8">
           <h2 className="mb-4 text-xl font-semibold text-gray-800">RLS Read Tests</h2>
-          <div className="grid grid-cols-3 gap-4 text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div className="rounded-lg border p-3">
-              <h3 className="font-medium">Categories</h3>
-              <p>{categoriesLoading ? 'Loading...' : categoriesError ? '❌ Error' : `✅ ${categories?.length || 0} items`}</p>
+              <h3 className="font-medium mb-2">Categories</h3>
+              {categoriesLoading ? (
+                <Skeleton className="h-5 w-24" />
+              ) : (
+                <p>{categoriesError ? '❌ Error' : `✅ ${categories?.length || 0} items`}</p>
+              )}
             </div>
             <div className="rounded-lg border p-3">
-              <h3 className="font-medium">Subcategories</h3>
-              <p>{subcategoriesLoading ? 'Loading...' : subcategoriesError ? '❌ Error' : `✅ ${subcategories?.length || 0} items`}</p>
+              <h3 className="font-medium mb-2">Subcategories</h3>
+              {subcategoriesLoading ? (
+                <Skeleton className="h-5 w-24" />
+              ) : (
+                <p>{subcategoriesError ? '❌ Error' : `✅ ${subcategories?.length || 0} items`}</p>
+              )}
             </div>
             <div className="rounded-lg border p-3">
-              <h3 className="font-medium">Skills</h3>
-              <p>{skillsLoading ? 'Loading...' : skillsError ? '❌ Error' : `✅ ${skills?.length || 0} items`}</p>
+              <h3 className="font-medium mb-2">Skills</h3>
+              {skillsLoading ? (
+                <Skeleton className="h-5 w-24" />
+              ) : (
+                <p>{skillsError ? '❌ Error' : `✅ ${skills?.length || 0} items`}</p>
+              )}
             </div>
           </div>
         </div>

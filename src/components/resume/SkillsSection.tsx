@@ -1,13 +1,23 @@
 import { useSkills } from '@/hooks/useSkills'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export function SkillsSection() {
   const { data: skills, isLoading, error } = useSkills()
 
   if (isLoading) {
     return (
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Skills</h2>
-        <div aria-live="polite" className="text-gray-600">Loading skills...</div>
+      <section className="mb-8 space-y-4 md:space-y-6">
+        <Skeleton className="h-8 w-32" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="space-y-3 p-4 border border-gray-200 rounded-lg">
+              <Skeleton className="h-5 w-3/4" />
+              <Skeleton className="h-4 w-1/2" />
+              <Skeleton className="h-4 w-1/3" />
+              <Skeleton className="h-16 w-full" />
+            </div>
+          ))}
+        </div>
       </section>
     )
   }
@@ -32,7 +42,7 @@ export function SkillsSection() {
 
   return (
     <section className="mb-8">
-      <h2 className="text-2xl font-semibold text-gray-900 mb-4">Skills</h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-6 tracking-tight">Skills</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {skills.map((skill) => (
           <div key={skill.id} className="bg-white p-4 rounded-lg border border-gray-200">
