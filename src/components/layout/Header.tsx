@@ -1,0 +1,129 @@
+import { Link } from '@tanstack/react-router'
+import { LogOut } from 'lucide-react'
+import { useState } from 'react'
+
+import { useAuthContext } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabase'
+
+export function Header() {
+  const { user, profile, isAdmin } = useAuthContext()
+  const [loggingOut, setLoggingOut] = useState(false)
+
+  const handleLogout = async () => {
+    setLoggingOut(true)
+
+    try {
+      // Try proper signOut with a timeout (3 seconds)
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Logout timeout')), 3000)
+      )
+
+      await Promise.race([supabase.auth.signOut(), timeoutPromise])
+
+      // Success - proper signout worked
+      window.location.href = '/'
+    } catch (error) {
+      // Fallback: If signOut fails or times out, manually clear storage
+      console.warn('SignOut failed or timed out, using fallback method:', error)
+
+      // Manually clear all Supabase auth data from localStorage
+      Object.keys(localStorage)
+        .filter(key => key.startsWith('sb-'))
+        .forEach(key => localStorage.removeItem(key))
+
+      // Reload the page to clear all state
+      window.location.href = '/'
+    }
+  }
+
+  return (
+    <header className="bg-white shadow-sm border-b border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo / Brand */}
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center space-x-2">
+              <span className="text-2xl font-bold text-blue-600">SS</span>
+              <span className="hidden sm:block text-xl font-semibold text-gray-900">
+                Sarika Srivastava
+              </span>
+            </Link>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="flex items-center space-x-6">
+            <Link
+              to="/"
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+              activeProps={{
+                className: 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
+              }}
+            >
+              Home
+            </Link>
+            <Link
+              to="/resume"
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+              activeProps={{
+                className: 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
+              }}
+            >
+              Resume
+            </Link>
+
+            {/* Admin Link - Only visible to admins */}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                activeProps={{
+                  className: 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
+                }}
+              >
+                Admin
+              </Link>
+            )}
+
+            {/* Auth Section */}
+            {user ? (
+              <div className="flex items-center space-x-4">
+                {/* User Info */}
+                <div className="hidden md:flex items-center space-x-2">
+                  <div className="text-right">
+                    <p className="text-sm font-medium text-gray-900">
+                      {profile?.full_name || user.email}
+                    </p>
+                    {isAdmin && (
+                      <p className="text-xs text-purple-600 font-semibold">Administrator</p>
+                    )}
+                  </div>
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+                    {(profile?.full_name?.[0] || user.email?.[0] || 'U').toUpperCase()}
+                  </div>
+                </div>
+
+                {/* Logout Button */}
+                <button
+                  onClick={handleLogout}
+                  disabled={loggingOut}
+                  className="p-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                  title="Logout"
+                  aria-label="Logout"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+              >
+                Login
+              </Link>
+            )}
+          </nav>
+        </div>
+      </div>
+    </header>
+  )
+}

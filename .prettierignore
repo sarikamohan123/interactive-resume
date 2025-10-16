@@ -1,0 +1,5 @@
+dist
+node_modules
+*.gen.ts
+routeTree.gen.ts
+.env*
