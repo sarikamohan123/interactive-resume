@@ -43,7 +43,7 @@ function IndexComponent() {
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight leading-tight">
               Sarika Srivastava
             </h1>
-            <p className="text-xl sm:text-2xl lg:text-3xl mb-6 font-light text-white/90 leading-relaxed max-w-4xl mx-auto">
+            <p className="text-xl sm:text-2xl lg:text-3xl mb-6 font-light text-white/90 leading-relaxed max-w-5xl mx-auto px-4">
               Full-Stack Engineer | Power BI Developer | AWS Solutions Architect Associate
             </p>
 
