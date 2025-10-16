@@ -14,7 +14,7 @@ function IndexComponent() {
           <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
             Sarika Srivastava
           </h1>
-          <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
             Full-Stack Engineer | Power BI Developer | AWS Solutions Architect Associate
           </p>
 
