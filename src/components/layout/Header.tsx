@@ -43,9 +43,9 @@ export function Header() {
           {/* Logo / Brand */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-blue-600">IR</span>
+              <span className="text-2xl font-bold text-blue-600">SS</span>
               <span className="hidden sm:block text-xl font-semibold text-gray-900">
-                Interactive Resume
+                Sarika Srivastava
               </span>
             </Link>
           </div>
@@ -75,15 +75,12 @@ export function Header() {
             {isAdmin && (
               <Link
                 to="/admin"
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 flex items-center space-x-1 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
                 activeProps={{
                   className: 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
                 }}
               >
-                <span>Admin</span>
-                <span className="px-2 py-0.5 text-xs font-semibold text-white bg-purple-600 rounded">
-                  Admin
-                </span>
+                Admin
               </Link>
             )}
 

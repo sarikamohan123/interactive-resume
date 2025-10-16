@@ -12,10 +12,10 @@ function IndexComponent() {
       <section className="bg-gradient-to-br from-blue-50 via-white to-purple-50 py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
-            Interactive Resume
+            Sarika Srivastava
           </h1>
           <p className="text-xl sm:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Modern portfolio showcasing skills, experience, and professional achievements
+            Full-Stack Engineer | Power BI Developer | AWS Solutions Architect Associate
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
