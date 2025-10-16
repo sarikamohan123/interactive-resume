@@ -1,9 +1,10 @@
 import { Link } from '@tanstack/react-router'
-import { LogOut } from 'lucide-react'
+import { LogOut, Shield } from 'lucide-react'
 import { useState } from 'react'
 
 import { useAuthContext } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
+import { Badge } from '@/components/ui/badge'
 
 export function Header() {
   const { user, profile, isAdmin } = useAuthContext()
@@ -87,17 +88,20 @@ export function Header() {
             {/* Auth Section */}
             {user ? (
               <div className="flex items-center space-x-4">
-                {/* User Info */}
-                <div className="hidden md:flex items-center space-x-2">
-                  <div className="text-right">
-                    <p className="text-sm font-medium text-gray-900">
-                      {profile?.full_name || user.email}
-                    </p>
+                {/* User Info - Modern card-like design */}
+                <div className="hidden md:flex items-center gap-3 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-100 hover:border-purple-200 transition-all duration-200">
+                  <div className="text-right space-y-1.5">
                     {isAdmin && (
-                      <p className="text-xs text-purple-600 font-semibold">Administrator</p>
+                      <Badge className="bg-purple-100 hover:bg-purple-150 text-purple-700 border border-purple-200 text-xs font-semibold px-2 py-0.5 flex items-center gap-1 w-fit ml-auto shadow-sm">
+                        <Shield className="w-3 h-3" />
+                        Administrator
+                      </Badge>
                     )}
+                    <p className="text-xs text-gray-600 font-medium">
+                      {user.email}
+                    </p>
                   </div>
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+                  <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold shadow-md">
                     {(profile?.full_name?.[0] || user.email?.[0] || 'U').toUpperCase()}
                   </div>
                 </div>
