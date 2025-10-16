@@ -8,11 +8,12 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResumeRouteImport } from './routes/resume'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as R404RouteImport } from './routes/404'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
@@ -23,6 +24,13 @@ import { Route as AdminExperiencesIndexRouteImport } from './routes/admin/experi
 import { Route as AdminEducationIndexRouteImport } from './routes/admin/education.index'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/admin/categories.index'
 
+const AdminRouteImport = createFileRoute('/admin')()
+
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResumeRoute = ResumeRouteImport.update({
   id: '/resume',
   path: '/resume',
@@ -36,11 +44,6 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const R404Route = R404RouteImport.update({
@@ -91,10 +94,10 @@ const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/404': typeof R404Route
-  '/admin': typeof Admin_layoutRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/admin': typeof Admin_layoutRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
   '/admin/education': typeof AdminEducationIndexRoute
@@ -119,10 +122,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/404': typeof R404Route
-  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/admin': typeof AdminRouteWithChildren
   '/admin/__layout': typeof Admin_layoutRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
@@ -136,10 +139,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/404'
-    | '/admin'
     | '/login'
     | '/reset-password'
     | '/resume'
+    | '/admin'
     | '/admin/'
     | '/admin/categories'
     | '/admin/education'
@@ -163,10 +166,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/404'
-    | '/admin'
     | '/login'
     | '/reset-password'
     | '/resume'
+    | '/admin'
     | '/admin/__layout'
     | '/admin/'
     | '/admin/categories/'
@@ -179,14 +182,21 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   R404Route: typeof R404Route
-  AdminRoute: typeof AdminRouteWithChildren
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResumeRoute: typeof ResumeRoute
+  AdminRoute: typeof AdminRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/resume': {
       id: '/resume'
       path: '/resume'
@@ -206,13 +216,6 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/404': {
@@ -238,7 +241,7 @@ declare module '@tanstack/react-router' {
     }
     '/admin/__layout': {
       id: '/admin/__layout'
-      path: ''
+      path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof Admin_layoutRouteImport
       parentRoute: typeof AdminRoute
@@ -306,10 +309,10 @@ const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R404Route: R404Route,
-  AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResumeRoute: ResumeRoute,
+  AdminRoute: AdminRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -20,7 +20,6 @@ export function ProtectedRoute({ children, requireAdmin = false }: ProtectedRout
     )
   }
 
-  // Redirect to login if not authenticated
   if (!user) {
     return <Navigate to="/login" />
   }
