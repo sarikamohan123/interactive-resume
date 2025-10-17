@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { supabase } from '@/lib/supabase'
-import { useAuthContext } from '@/contexts/AuthContext'
 
 interface Skill {
   id: string
@@ -16,8 +15,6 @@ interface Skill {
 }
 
 export function useSkills() {
-  const { authReady } = useAuthContext()
-
   return useQuery({
     queryKey: ['skills'],
     queryFn: async (): Promise<Skill[]> => {
@@ -32,7 +29,6 @@ export function useSkills() {
 
       return data || []
     },
-    enabled: authReady, // Only query when session restoration is complete
     staleTime: 1000 * 60 * 5, // 5 minutes
   })
 }

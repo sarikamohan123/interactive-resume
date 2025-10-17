@@ -1,28 +1,40 @@
 import { useEducation } from '@/hooks/useEducation'
+import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 import { formatDateRange } from '@/utils/dateHelpers'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { GraduationCap, Award, BookOpen } from 'lucide-react'
 
 export function EducationSection() {
   const { data: education, isLoading, error } = useEducation()
+  const { elementRef, isVisible } = useScrollAnimation()
 
   if (isLoading) {
     return (
-      <section className="mb-8 space-y-4 md:space-y-6">
-        <Skeleton className="h-8 w-36" />
-        <div className="space-y-4">
+      <section className="mb-12">
+        <div className="mb-8">
+          <Skeleton className="h-10 w-40 mb-2" />
+          <Skeleton className="h-4 w-96" />
+        </div>
+        <div className="space-y-8">
           {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="space-y-3 p-6 border border-gray-200 rounded-lg">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                <div className="space-y-2 flex-1">
-                  <Skeleton className="h-6 w-3/4" />
-                  <Skeleton className="h-5 w-1/2" />
-                </div>
-                <Skeleton className="h-4 w-32 mt-2 sm:mt-0" />
+            <div key={i} className="flex gap-6">
+              <div className="flex flex-col items-center">
+                <Skeleton className="w-12 h-12 rounded-full" />
+                {i < 1 && <Skeleton className="w-0.5 h-32 mt-4" />}
               </div>
-              <div className="space-y-2 mt-4">
-                <Skeleton className="h-4 w-2/3" />
-                <Skeleton className="h-4 w-1/2" />
-              </div>
+              <Card className="flex-1 border-2">
+                <CardHeader>
+                  <Skeleton className="h-6 w-2/3 mb-2" />
+                  <Skeleton className="h-5 w-1/2 mb-2" />
+                  <Skeleton className="h-4 w-32" />
+                </CardHeader>
+                <CardContent>
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-5/6" />
+                </CardContent>
+              </Card>
             </div>
           ))}
         </div>
@@ -32,46 +44,109 @@ export function EducationSection() {
 
   if (error) {
     return (
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Education</h2>
-        <div className="text-red-600">Error loading education: {error.message}</div>
+      <section className="mb-12">
+        <h2 className="text-3xl font-bold text-gray-900 mb-6">Education</h2>
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+          Error loading education: {error.message}
+        </div>
       </section>
     )
   }
 
   if (!education || education.length === 0) {
     return (
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-4">Education</h2>
+      <section className="mb-12">
+        <h2 className="text-3xl font-bold text-gray-900 mb-6">Education</h2>
         <p className="text-gray-500 italic">No education yet.</p>
       </section>
     )
   }
 
   return (
-    <section className="mb-8">
-      <h2 className="text-3xl font-bold text-gray-900 mb-6 tracking-tight">Education</h2>
-      <div className="space-y-4">
-        {education.map((edu) => (
-          <div key={edu.id} className="bg-white p-6 rounded-lg border border-gray-200">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">{edu.degree}</h3>
-                <p className="text-gray-700">{edu.school}</p>
+    <section className="mb-12">
+      {/* Section Header with Gradient Accent */}
+      <div
+        ref={elementRef}
+        className={`mb-8 transition-all duration-1000 ${
+          isVisible
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-8'
+        }`}
+      >
+        <h2 className="text-4xl font-bold mb-3 tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Education & Certifications
+        </h2>
+        <div className={`h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-1000 delay-300 ${
+          isVisible ? 'w-20' : 'w-0'
+        }`} />
+        <p className="mt-4 text-lg text-gray-600">
+          Academic achievements and professional certifications
+        </p>
+      </div>
+
+      {/* Timeline */}
+      <div className="space-y-8">
+        {education.map((edu, index) => (
+          <div
+            key={edu.id}
+            className={`flex gap-6 group transition-all duration-700 ${
+              isVisible
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8'
+            }`}
+            style={{
+              transitionDelay: `${index * 150}ms`
+            }}
+          >
+            {/* Timeline Connector */}
+            <div className="flex flex-col items-center flex-shrink-0">
+              {/* Timeline Icon */}
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-200/50 group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-purple-300/50 transition-all duration-300">
+                <GraduationCap className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
               </div>
-              <span className="text-sm text-gray-500 mt-1 sm:mt-0">
-                {formatDateRange(edu.start_date, edu.end_date)}
-              </span>
+
+              {/* Timeline Line */}
+              {index < education.length - 1 && (
+                <div className="w-0.5 h-full min-h-[4rem] bg-gradient-to-b from-blue-300 to-transparent mt-4" />
+              )}
             </div>
-            {edu.details && typeof edu.details === 'object' && (
-              <div className="mt-4 text-gray-700">
-                {Object.entries(edu.details).map(([key, value]) => (
-                  <p key={key} className="text-sm">
-                    <span className="font-medium">{key}:</span> {String(value)}
-                  </p>
-                ))}
-              </div>
-            )}
+
+            {/* Education Card */}
+            <Card className="flex-1 border-2 border-blue-200 hover:border-purple-400 hover:shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 motion-safe:hover:-translate-y-2 bg-white">
+              <CardHeader className="pb-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-purple-600 transition-colors">
+                      {edu.degree}
+                    </h3>
+                    <p className="text-base font-medium text-gray-700 mb-2">{edu.school}</p>
+                    <Badge className="bg-blue-100 text-blue-700 border-blue-200 border hover:bg-blue-50 transition-colors">
+                      {formatDateRange(edu.start_date, edu.end_date)}
+                    </Badge>
+                  </div>
+                </div>
+              </CardHeader>
+
+              {edu.details && typeof edu.details === 'object' && (
+                <CardContent className="pt-0">
+                  <ul className="space-y-3">
+                    {Object.entries(edu.details).map(([key, value]) => (
+                      <li key={key} className="text-gray-700 flex items-start gap-3 group/item">
+                        {key.toLowerCase().includes('certification') || key.toLowerCase().includes('cert') ? (
+                          <Award className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform" />
+                        ) : (
+                          <BookOpen className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform" />
+                        )}
+                        <div>
+                          <span className="font-semibold text-gray-900">{key}:</span>{' '}
+                          <span className="leading-relaxed">{String(value)}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              )}
+            </Card>
           </div>
         ))}
       </div>
