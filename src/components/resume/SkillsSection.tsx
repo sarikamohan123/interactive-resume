@@ -1,9 +1,9 @@
-import { useSkills } from '@/hooks/useSkills'
+import { useSkills, type Skill } from '@/hooks/useSkills'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Award, TrendingUp, Zap } from 'lucide-react'
+import { Award, TrendingUp, Zap, CheckCircle2 } from 'lucide-react'
 
 const getLevelConfig = (level: string) => {
   const normalizedLevel = level?.toLowerCase() || ''
@@ -11,35 +11,116 @@ const getLevelConfig = (level: string) => {
   switch (normalizedLevel) {
     case 'expert':
       return {
-        color: 'bg-green-100 text-green-700 border-green-200 hover:bg-green-50 transition-colors',
+        color: 'bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-50 transition-colors',
         icon: Award,
-        iconColor: 'text-green-600'
+        iconColor: 'text-blue-600',
+        gradientFrom: 'from-blue-500',
+        gradientTo: 'to-blue-600',
+        shadowColor: 'shadow-blue-200/50',
+        shadowHover: 'group-hover:shadow-blue-300/60'
       }
     case 'advanced':
       return {
         color: 'bg-blue-100 text-blue-700 border-blue-200 hover:bg-blue-50 transition-colors',
         icon: TrendingUp,
-        iconColor: 'text-blue-600'
+        iconColor: 'text-blue-600',
+        gradientFrom: 'from-blue-500',
+        gradientTo: 'to-purple-500',
+        shadowColor: 'shadow-blue-200/50',
+        shadowHover: 'group-hover:shadow-purple-300/50'
       }
     case 'intermediate':
       return {
         color: 'bg-purple-100 text-purple-700 border-purple-200 hover:bg-purple-50 transition-colors',
         icon: Zap,
-        iconColor: 'text-purple-600'
+        iconColor: 'text-purple-600',
+        gradientFrom: 'from-purple-500',
+        gradientTo: 'to-purple-600',
+        shadowColor: 'shadow-purple-200/50',
+        shadowHover: 'group-hover:shadow-purple-400/60'
       }
     case 'certified':
       return {
         color: 'bg-amber-100 text-amber-700 border-amber-200 hover:bg-amber-50 transition-colors',
         icon: Award,
-        iconColor: 'text-amber-600'
+        iconColor: 'text-amber-600',
+        gradientFrom: 'from-amber-500',
+        gradientTo: 'to-amber-600',
+        shadowColor: 'shadow-amber-200/50',
+        shadowHover: 'group-hover:shadow-amber-400/60'
       }
     default:
       return {
         color: 'bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-50 transition-colors',
         icon: Zap,
-        iconColor: 'text-gray-600'
+        iconColor: 'text-gray-600',
+        gradientFrom: 'from-gray-500',
+        gradientTo: 'to-gray-600',
+        shadowColor: 'shadow-gray-200/50',
+        shadowHover: 'group-hover:shadow-gray-400/60'
       }
   }
+}
+
+// Level priority for sorting (higher number = higher priority)
+const getLevelPriority = (level: string | null): number => {
+  const normalized = level?.toLowerCase() || ''
+  switch (normalized) {
+    case 'expert': return 4
+    case 'advanced': return 3
+    case 'intermediate': return 2
+    case 'certified': return 1
+    default: return 0
+  }
+}
+
+// Group skills by subcategory and sort
+const groupAndSortSkills = (skills: Skill[]) => {
+  // First sort all skills by level (desc) then years (desc)
+  const sortedSkills = [...skills].sort((a, b) => {
+    // Sort by level priority first
+    const levelDiff = getLevelPriority(b.level) - getLevelPriority(a.level)
+    if (levelDiff !== 0) return levelDiff
+
+    // Then by years (descending)
+    const yearsA = a.years || 0
+    const yearsB = b.years || 0
+    return yearsB - yearsA
+  })
+
+  // Group by subcategory
+  const grouped = sortedSkills.reduce((acc, skill) => {
+    const subcategoryName = skill.subcategory?.name || 'Other'
+    const subcategorySort = skill.subcategory?.sort_order || 999
+
+    if (!acc[subcategoryName]) {
+      acc[subcategoryName] = {
+        name: subcategoryName,
+        sortOrder: subcategorySort,
+        skills: []
+      }
+    }
+
+    acc[subcategoryName].skills.push(skill)
+    return acc
+  }, {} as Record<string, { name: string; sortOrder: number; skills: Skill[] }>)
+
+  // Convert to array and sort by subcategory sort_order
+  return Object.values(grouped).sort((a, b) => a.sortOrder - b.sortOrder)
+}
+
+// Split description into bullet points
+const formatDescription = (description: string | null): string[] => {
+  if (!description) return []
+
+  // Split by common delimiters
+  const points = description
+    .split(/[.;]/)
+    .map(point => point.trim())
+    .filter(point => point.length > 0)
+
+  // If no delimiters found, return the whole description as one point
+  return points.length > 0 ? points : [description]
 }
 
 export function SkillsSection() {
@@ -53,18 +134,23 @@ export function SkillsSection() {
           <Skeleton className="h-10 w-40 mb-2" />
           <Skeleton className="h-4 w-96" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <Card key={i} className="border-2">
-              <CardHeader className="pb-3">
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-4 w-20 mt-2" />
-              </CardHeader>
-              <CardContent>
-                <Skeleton className="h-4 w-1/3 mb-2" />
-                <Skeleton className="h-16 w-full" />
-              </CardContent>
-            </Card>
+        <div className="space-y-8">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i}>
+              <Skeleton className="h-6 w-32 mb-4" />
+              <div className="flex gap-6">
+                <div className="flex flex-col items-center">
+                  <Skeleton className="w-12 h-12 rounded-full" />
+                  <Skeleton className="w-0.5 h-32 mt-4" />
+                </div>
+                <Card className="flex-1 border-2">
+                  <CardHeader>
+                    <Skeleton className="h-6 w-2/3 mb-2" />
+                    <Skeleton className="h-4 w-32" />
+                  </CardHeader>
+                </Card>
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -74,7 +160,7 @@ export function SkillsSection() {
   if (error) {
     return (
       <section className="mb-12">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">Skills</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-6">Technical Skills</h2>
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
           Error loading skills: {error.message}
         </div>
@@ -85,11 +171,13 @@ export function SkillsSection() {
   if (!skills || skills.length === 0) {
     return (
       <section className="mb-12">
-        <h2 className="text-3xl font-bold text-gray-900 mb-6">Skills</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-6">Technical Skills</h2>
         <p className="text-gray-500 italic">No skills yet.</p>
       </section>
     )
   }
+
+  const groupedSkills = groupAndSortSkills(skills)
 
   return (
     <section className="mb-12">
@@ -105,7 +193,7 @@ export function SkillsSection() {
         <h2 className="text-4xl font-bold mb-3 tracking-tight text-gradient">
           Technical Skills
         </h2>
-        <div className={`h-1 w-20 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-1000 delay-300 ${
+        <div className={`h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transition-all duration-1000 delay-300 ${
           isVisible ? 'w-20' : 'w-0'
         }`} />
         <p className="mt-4 text-lg text-gray-600">
@@ -113,58 +201,111 @@ export function SkillsSection() {
         </p>
       </div>
 
-      {/* Skills Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {skills.map((skill, index) => {
-          const levelConfig = skill.level ? getLevelConfig(skill.level) : null
-          const LevelIcon = levelConfig?.icon
-
-          return (
-            <Card
-              key={skill.id}
-              className={`group border-2 border-gray-200 hover:border-blue-400 hover:shadow-2xl hover:shadow-blue-300/40 transition-all duration-500 motion-safe:hover:-translate-y-2 hover:bg-gradient-to-br hover:from-blue-50/50 hover:to-purple-50/30 bg-white ${
+      {/* Grouped Skills Timeline */}
+      <div className="space-y-6 sm:space-y-10">
+        {groupedSkills.map((group, groupIndex) => (
+          <div key={group.name} className="space-y-4 sm:space-y-6">
+            {/* Subcategory Header */}
+            <div
+              className={`transition-all duration-1000 ${
                 isVisible
                   ? 'opacity-100 translate-y-0'
                   : 'opacity-0 translate-y-8'
               }`}
               style={{
-                transitionDelay: `${index * 50}ms`
+                transitionDelay: `${groupIndex * 200}ms`
               }}
             >
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                    {skill.name}
-                  </h3>
-                  {levelConfig && LevelIcon && (
-                    <LevelIcon className={`w-5 h-5 ${levelConfig.iconColor} flex-shrink-0`} />
-                  )}
-                </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                {group.name}
+              </h3>
+            </div>
 
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {skill.level && levelConfig && (
-                    <Badge className={`${levelConfig.color} border text-xs font-semibold`}>
-                      {skill.level}
-                    </Badge>
-                  )}
-                  {skill.years && (
-                    <Badge variant="outline" className="text-xs font-medium border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
-                      {skill.years} {skill.years === 1 ? 'year' : 'years'}
-                    </Badge>
-                  )}
-                </div>
-              </CardHeader>
+            {/* Skills in this subcategory */}
+            <div className="space-y-5 sm:space-y-8">
+              {group.skills.map((skill, skillIndex) => {
+                const levelConfig = skill.level ? getLevelConfig(skill.level) : null
+                const LevelIcon = levelConfig?.icon
+                const descriptionPoints = formatDescription(skill.description)
+                const isLastInGroup = skillIndex === group.skills.length - 1
 
-              {skill.description && (
-                <CardContent className="pt-0">
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {skill.description}
-                  </p>
-                </CardContent>
-              )}
-            </Card>
-          )
-        })}
+                return (
+                  <div
+                    key={skill.id}
+                    className={`flex flex-col sm:flex-row gap-4 sm:gap-6 group transition-all duration-700 ${
+                      isVisible
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-8'
+                    }`}
+                    style={{
+                      transitionDelay: `${(groupIndex * 200) + (skillIndex * 100)}ms`
+                    }}
+                  >
+                    {/* Timeline Connector */}
+                    <div className="flex sm:flex-col items-center sm:items-center flex-shrink-0">
+                      {/* Timeline Icon */}
+                      {levelConfig && LevelIcon ? (
+                        <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${levelConfig.gradientFrom} ${levelConfig.gradientTo} flex items-center justify-center shadow-lg ${levelConfig.shadowColor} group-hover:scale-110 group-hover:shadow-xl ${levelConfig.shadowHover} transition-all duration-300`}>
+                          <LevelIcon className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center shadow-lg shadow-gray-200/50">
+                          <Zap className="w-6 h-6 text-white" />
+                        </div>
+                      )}
+
+                      {/* Timeline Line - Hidden on mobile, visible on sm+ */}
+                      {!isLastInGroup && (
+                        <div className="hidden sm:block w-0.5 h-full min-h-[4rem] bg-gradient-to-b from-blue-300 to-transparent mt-4" />
+                      )}
+                    </div>
+
+                    {/* Skill Card */}
+                    <Card className="flex-1 border-2 border-blue-200 hover:border-purple-400 hover:shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 motion-safe:hover:-translate-y-2 active:scale-[0.98] bg-white">
+                      <CardHeader className="pb-4">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                          <div className="flex-1">
+                            <h4 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-purple-600 transition-colors">
+                              {skill.name}
+                            </h4>
+
+                            {/* Badges Row */}
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              {skill.level && levelConfig && (
+                                <Badge className={`${levelConfig.color} border text-xs font-semibold`}>
+                                  {skill.level}
+                                </Badge>
+                              )}
+                              {skill.years && (
+                                <Badge variant="outline" className="text-xs font-medium border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+                                  {skill.years} {skill.years === 1 ? 'year' : 'years'}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </CardHeader>
+
+                      {/* Description as Bullet Points */}
+                      {descriptionPoints.length > 0 && (
+                        <CardContent className="pt-0">
+                          <ul className="space-y-2">
+                            {descriptionPoints.map((point, index) => (
+                              <li key={index} className="text-gray-700 flex items-start gap-3 group/item">
+                                <CheckCircle2 className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5 group-hover/item:scale-110 transition-transform" />
+                                <span className="leading-relaxed text-sm">{point}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </CardContent>
+                      )}
+                    </Card>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   )

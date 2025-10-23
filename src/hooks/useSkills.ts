@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { supabase } from '@/lib/supabase'
 
-interface Skill {
+export interface Skill {
   id: string
   subcategory_id: string
   name: string
@@ -12,6 +12,16 @@ interface Skill {
   links: Record<string, string> | null
   sort_order: number
   created_at: string
+  subcategory: {
+    id: string
+    name: string
+    sort_order: number
+    category: {
+      id: string
+      name: string
+      sort_order: number
+    }
+  }
 }
 
 export function useSkills() {
@@ -20,7 +30,19 @@ export function useSkills() {
     queryFn: async (): Promise<Skill[]> => {
       const { data, error } = await supabase
         .from('skills')
-        .select('*')
+        .select(`
+          *,
+          subcategory:subcategories(
+            id,
+            name,
+            sort_order,
+            category:categories(
+              id,
+              name,
+              sort_order
+            )
+          )
+        `)
         .order('sort_order', { ascending: true })
 
       if (error) {
