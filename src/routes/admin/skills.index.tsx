@@ -304,14 +304,13 @@ function SkillsPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Level (Optional)</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value || ''}>
+                      <Select onValueChange={field.onChange} value={field.value || undefined}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select level" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="">None</SelectItem>
                           <SelectItem value="Expert">Expert</SelectItem>
                           <SelectItem value="Advanced">Advanced</SelectItem>
                           <SelectItem value="Intermediate">Intermediate</SelectItem>

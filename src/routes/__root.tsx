@@ -1,5 +1,5 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router'
-import { useEffect } from 'react'
+import { createRootRoute, Outlet, useRouter } from '@tanstack/react-router'
+import { useEffect, useLayoutEffect } from 'react'
 import { Toaster } from 'sonner'
 
 import { ErrorBoundary } from '@/components/error-boundary'
@@ -13,6 +13,8 @@ export const Route = createRootRoute({
 })
 
 function RootComponent() {
+  const router = useRouter()
+
   // Handle password recovery redirects
   useEffect(() => {
     const hash = window.location.hash
@@ -24,6 +26,12 @@ function RootComponent() {
       window.location.replace(`/reset-password${hash}`)
     }
   }, [])
+
+  // Scroll to top on route change to ensure content is visible
+  // Using useLayoutEffect to ensure scroll happens before child components check viewport
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [router.state.location.pathname])
 
   return (
     <div className="min-h-screen bg-white font-sans antialiased">

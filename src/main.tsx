@@ -1,9 +1,8 @@
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
-//import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { StrictMode, Suspense } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import { AuthProvider } from '@/contexts/AuthContext'
@@ -41,11 +40,7 @@ createRoot(rootElement).render(
   <StrictMode>
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <Suspense
-          fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}
-        >
-          <RouterProvider router={router} />
-        </Suspense>
+        <RouterProvider router={router} />
         {import.meta.env.DEV && (
           <>
             <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-right" />
