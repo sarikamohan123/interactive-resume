@@ -36,7 +36,7 @@ function RootComponent() {
   return (
     <div className="min-h-screen bg-white font-sans antialiased">
       <Header />
-      <main>
+      <main className="overflow-hidden">
         <Outlet />
       </main>
       <Toaster position="top-right" richColors />

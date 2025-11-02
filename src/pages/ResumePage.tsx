@@ -19,7 +19,7 @@ export function ResumePage() {
       {/* Skills Section - White with Subtle Gradient */}
       <section className="bg-gradient-to-br from-white via-gray-50/30 to-white py-24 md:py-32">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div id="skills" className="scroll-mt-24">
+          <div id="skills" className="scroll-mt-32">
             <SkillsSection />
           </div>
         </div>
@@ -28,7 +28,7 @@ export function ResumePage() {
       {/* Experience Section - Soft Blue-Purple Gradient */}
       <section className="bg-gradient-to-br from-blue-50/60 via-purple-50/40 to-blue-50/30 py-24 md:py-32">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div id="experience" className="scroll-mt-24">
+          <div id="experience" className="scroll-mt-32">
             <ExperienceSection />
           </div>
         </div>
@@ -37,7 +37,7 @@ export function ResumePage() {
       {/* Education Section - Soft Green Gradient */}
       <section className="bg-gradient-to-br from-green-50/50 via-emerald-50/30 to-teal-50/40 py-24 md:py-32">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div id="education" className="scroll-mt-24">
+          <div id="education" className="scroll-mt-32">
             <EducationSection />
           </div>
         </div>

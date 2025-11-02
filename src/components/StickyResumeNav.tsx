@@ -2,14 +2,10 @@ import { useEffect, useState } from 'react'
 import { Code2, Briefcase, GraduationCap, Download } from 'lucide-react'
 
 export function StickyResumeNav() {
-  const [isVisible, setIsVisible] = useState(false)
   const [activeSection, setActiveSection] = useState('skills')
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show nav after scrolling past the hero (approximately 400px)
-      setIsVisible(window.scrollY > 400)
-
       // Determine active section based on scroll position
       const sections = ['skills', 'experience', 'education']
       const sectionElements = sections.map(id => document.getElementById(id))
@@ -39,17 +35,16 @@ export function StickyResumeNav() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
-      const navHeight = 60 // Approximate height of the fixed nav
-      const yOffset = -navHeight - 20 // Offset for fixed nav + extra spacing
+      const navHeight = 60 // Height of the sticky nav
+      const yOffset = -navHeight - 20 // Offset for sticky nav + extra spacing
       const y = element.getBoundingClientRect().top + window.scrollY + yOffset
       window.scrollTo({ top: y, behavior: 'smooth' })
     }
   }
 
-  if (!isVisible) return null
-
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-200/50 shadow-sm motion-safe:animate-fade-in">
+    <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-lg border-b border-gray-200/50 shadow-sm motion-safe:animate-fade-in">
+
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 py-3">
           {/* Section Navigation Pills - Horizontally scrollable on mobile */}

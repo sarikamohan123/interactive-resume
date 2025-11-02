@@ -2,9 +2,9 @@ import { Mail, Phone, MapPin, Github, Linkedin } from 'lucide-react'
 
 export function HeaderSection() {
   return (
-    <header className="relative -mx-4 sm:-mx-6 lg:-mx-8 mb-12 overflow-hidden">
+    <header className="relative mb-12 overflow-hidden">
       {/* Gradient Background Section */}
-      <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 px-4 sm:px-6 lg:px-8 py-12 sm:py-16 overflow-hidden">
         {/* Grid pattern overlay */}
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
@@ -64,7 +64,7 @@ export function HeaderSection() {
           </div>
         </div>
 
-        {/* Decorative gradient orbs */}
+        {/* Decorative gradient orbs - Clipped to container */}
         <div className="absolute top-0 left-0 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 motion-safe:animate-blob -z-10" />
         <div className="absolute top-0 right-0 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 motion-safe:animate-blob motion-safe:animation-delay-2000 -z-10" />
       </div>
