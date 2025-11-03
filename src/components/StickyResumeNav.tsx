@@ -3,9 +3,22 @@ import { Code2, Briefcase, GraduationCap, Download } from 'lucide-react'
 
 export function StickyResumeNav() {
   const [activeSection, setActiveSection] = useState('skills')
+  const [isFixed, setIsFixed] = useState(false)
+  const [navOffsetTop, setNavOffsetTop] = useState(0)
+
+  useEffect(() => {
+    // Get the nav's offset position on mount
+    const navElement = document.getElementById('resume-nav')
+    if (navElement) {
+      setNavOffsetTop(navElement.offsetTop)
+    }
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
+      // Simple scroll position check - no layout-shifting bounding rect
+      setIsFixed(window.scrollY > navOffsetTop)
+
       // Determine active section based on scroll position
       const sections = ['skills', 'experience', 'education']
       const sectionElements = sections.map(id => document.getElementById(id))
@@ -25,7 +38,7 @@ export function StickyResumeNav() {
     handleScroll() // Check initial state
 
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, [navOffsetTop])
 
   const handleDownloadResume = () => {
     // TODO: Replace with actual resume PDF URL when available
@@ -43,9 +56,17 @@ export function StickyResumeNav() {
   }
 
   return (
-    <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-lg border-b border-gray-200/50 shadow-sm motion-safe:animate-fade-in">
+    <>
+      <nav
+        id="resume-nav"
+        className={`${
+          isFixed
+            ? 'fixed top-0 left-0 right-0 z-50 shadow-md'
+            : 'relative z-40 shadow-sm'
+        } bg-white/90 backdrop-blur-lg border-b border-gray-200/50 motion-safe:animate-fade-in`}
+      >
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4 py-3">
           {/* Section Navigation Pills - Horizontally scrollable on mobile */}
           <div className="relative flex-1 overflow-x-auto scrollbar-hide">
@@ -103,5 +124,9 @@ export function StickyResumeNav() {
         </div>
       </div>
     </nav>
+
+    {/* Placeholder to prevent layout shift when nav becomes fixed */}
+    {isFixed && <div className="h-[60px]" />}
+    </>
   )
 }
