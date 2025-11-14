@@ -1,5 +1,6 @@
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, Link } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
+import { ArrowLeft } from 'lucide-react'
 
 import { useAuthContext } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
@@ -108,8 +109,14 @@ export function Login() {
           </button>
         </form>
 
-        <div className="text-center text-sm text-gray-600">
-          <p>Demo Account: Check your database for admin credentials</p>
+        <div className="text-center">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Home
+          </Link>
         </div>
       </div>
     </div>

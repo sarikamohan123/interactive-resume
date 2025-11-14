@@ -279,20 +279,23 @@ function IndexComponent() {
 
           <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
             {[
-              { name: 'React 19', color: 'from-cyan-500 to-blue-500' },
-              { name: 'TypeScript', color: 'from-blue-600 to-blue-700' },
-              { name: 'TanStack Router', color: 'from-red-500 to-orange-500' },
-              { name: 'TanStack Query', color: 'from-orange-500 to-amber-500' },
-              { name: 'Tailwind CSS', color: 'from-teal-500 to-cyan-500' },
-              { name: 'Supabase', color: 'from-green-500 to-emerald-600' },
-              { name: 'shadcn/ui', color: 'from-gray-700 to-gray-900' },
+              { name: 'React 19', color: 'from-cyan-500 to-blue-500', url: 'https://react.dev' },
+              { name: 'TypeScript', color: 'from-blue-600 to-blue-700', url: 'https://www.typescriptlang.org' },
+              { name: 'TanStack Router', color: 'from-red-500 to-orange-500', url: 'https://tanstack.com/router/latest' },
+              { name: 'TanStack Query', color: 'from-orange-500 to-amber-500', url: 'https://tanstack.com/query/latest' },
+              { name: 'Tailwind CSS', color: 'from-teal-500 to-cyan-500', url: 'https://tailwindcss.com' },
+              { name: 'Supabase', color: 'from-green-500 to-emerald-600', url: 'https://supabase.com' },
+              { name: 'shadcn/ui', color: 'from-gray-700 to-gray-900', url: 'https://ui.shadcn.com' },
             ].map((tech) => (
-              <div
+              <a
                 key={tech.name}
-                className={`group px-5 py-3 bg-gradient-to-r ${tech.color} rounded-full text-white font-medium shadow-lg hover:shadow-xl motion-safe:transform motion-safe:hover:scale-110 transition-all duration-300 cursor-default`}
+                href={tech.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`group px-5 py-3 bg-gradient-to-r ${tech.color} rounded-full text-white font-medium shadow-lg hover:shadow-xl motion-safe:transform motion-safe:hover:scale-110 transition-all duration-300 cursor-pointer`}
               >
                 {tech.name}
-              </div>
+              </a>
             ))}
           </div>
 
