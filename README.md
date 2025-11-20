@@ -5,6 +5,7 @@ A modern, interactive resume application built with React 19 and cutting-edge 20
 ## 🎯 Project Purpose
 
 This application serves as a dynamic showcase for recruiters and hiring managers, providing:
+
 - **Interactive data visualization** of skills, experience, and education
 - **Advanced filtering and sorting** capabilities for resume data
 - **Live portfolio demonstrations** of complex UX/UI solutions
@@ -15,18 +16,21 @@ This application serves as a dynamic showcase for recruiters and hiring managers
 ### Three Core Modules
 
 #### 📄 Resume Module (Public)
+
 - Dynamic display of categorized skills with proficiency levels
 - Interactive timeline of professional experience
 - Filterable education and certification records
 - Real-time data updates from Supabase backend
 
-#### 🚀 Showcase Module (Public) - *Planned for Future Release*
+#### 🚀 Showcase Module (Public) - _Planned for Future Release_
+
 - Portfolio of advanced frontend solutions
 - Embedded mini-applications demonstrating UX/UI problem-solving
 - Interactive code examples and technical explanations
 - Performance-optimized media galleries
 
 #### ⚙️ Admin Module (Private)
+
 - Single-user authentication for content management
 - CRUD operations for all resume data entities
 - Real-time content updates with optimistic UI feedback
@@ -35,11 +39,13 @@ This application serves as a dynamic showcase for recruiters and hiring managers
 ## 💻 Modern Tech Stack (2025)
 
 ### Core Framework
+
 - **React 19** - Concurrent Features, useOptimistic, React Compiler
 - **TypeScript 5.8+** - Strict typing with enhanced project references
 - **Vite 7+** - Modern build tooling with optimized development experience
 
 ### Key Dependencies
+
 - **TanStack Router v2** - Type-safe file-based routing
 - **TanStack Query v5** - Advanced server state management with real-time features
 - **Supabase v2+** - Backend-as-a-Service with real-time database subscriptions
@@ -51,6 +57,7 @@ This application serves as a dynamic showcase for recruiters and hiring managers
 ## 🗄️ Data Model
 
 The application manages structured resume data through Supabase with the following entities:
+
 - **Categories** → **Subcategories** → **Skills** (hierarchical skill organization)
 - **Experiences** (professional work history with detailed descriptions)
 - **Education** (academic background and certifications)
@@ -109,6 +116,7 @@ npm run clean          # Clean build artifacts
 ### Environment Setup
 
 1. **Supabase Configuration**:
+
    ```bash
    # .env.local
    VITE_SUPABASE_URL=your_supabase_url
@@ -135,6 +143,7 @@ After setting up the Supabase database and running the migration:
    - Verify the `profiles` table row was automatically created
 
 2. **Grant Admin Access** (one-time setup):
+
    ```sql
    UPDATE public.profiles
    SET is_admin = true
@@ -152,15 +161,19 @@ After setting up the Supabase database and running the migration:
 The application uses Supabase as the database backend. Follow these steps to set up your database:
 
 ### 1. Database Schema Setup (First Time Only)
+
 1. Open your Supabase project dashboard
 2. Navigate to **SQL Editor** in the left sidebar
 3. Copy and paste the content from `database/migration.sql`
 4. Execute to create all tables and constraints
+5. Testing
 
 ### 2. Populate with Resume Data
+
 Choose one of the following data population options:
 
 #### Option A: Real Resume Data (Production)
+
 ```sql
 -- Use database/sarika-resume-data.sql for production
 -- Copy entire file content to Supabase SQL Editor
@@ -169,6 +182,7 @@ Choose one of the following data population options:
 ```
 
 #### Option B: Sample Data (Development/Testing)
+
 ```sql
 -- Use database/sample-data.sql for testing
 -- Contains realistic sample data for development
@@ -178,6 +192,7 @@ Choose one of the following data population options:
 ### 3. Data Script Features
 
 **Production Script (`sarika-resume-data.sql`)**:
+
 - ✅ **Idempotent**: Safe to run multiple times without duplicates
 - ✅ **No TRUNCATE**: Won't delete existing data
 - ✅ **No hardcoded UUIDs**: Uses name-based relationships
@@ -185,12 +200,15 @@ Choose one of the following data population options:
 - ✅ **PII-free**: No personal information in version control
 
 ### 4. Verification
+
 After running any data script:
+
 1. Check the **Messages tab** in Supabase SQL Editor for confirmation
 2. Look for "RESUME DATA - POPULATION COMPLETE" notice
 3. Verify the Resume Module displays data correctly in your application
 
 ### 5. Database Files Overview
+
 - `database/migration.sql` - Database schema and table creation
 - `database/sarika-resume-data.sql` - Real resume data (idempotent, production-ready)
 - `database/sample-data.sql` - Generic sample data for development
@@ -199,12 +217,14 @@ After running any data script:
 ## 🎨 Key Features
 
 ### For Recruiters & Viewers
+
 - **Interactive Skills Matrix**: Filter and explore technical capabilities
 - **Dynamic Experience Timeline**: Drill down into role details and achievements
 - **Live Portfolio Demos**: Experience actual applications, not just screenshots
 - **Responsive Design**: Optimal viewing on all devices
 
 ### For Content Management
+
 - **Real-time Updates**: Changes reflect immediately without deployment
 - **Rich Content Support**: Media uploads, formatted descriptions, and links
 - **Data Relationships**: Manage hierarchical skill categorization
@@ -213,6 +233,7 @@ After running any data script:
 ## 🔧 Development Philosophy
 
 This project demonstrates mastery of:
+
 - **Modern React Patterns**: Concurrent rendering, optimistic updates, advanced hooks
 - **Type Safety**: Comprehensive TypeScript usage with strict configurations
 - **Performance**: Code splitting, lazy loading, optimistic UI patterns
@@ -222,6 +243,7 @@ This project demonstrates mastery of:
 ## 📊 Implementation Status
 
 ### ✅ Fully Implemented & Production-Ready
+
 - **Resume Module**: Complete with all sections (Skills, Experience, Education)
 - **Authentication System**: Login, logout, password reset, protected routes
 - **Admin CRUD System**: Full management for Categories, Subcategories, Skills, Experiences, Education
@@ -231,6 +253,7 @@ This project demonstrates mastery of:
 - **Build Process**: Production-ready builds with optimized chunks
 
 ### 🚧 Planned for Future Enhancement
+
 - **Showcase Module**: Portfolio gallery with interactive demos
 - **Testing Suite**: Comprehensive Vitest + Playwright test coverage
 - **Performance Optimizations**: React 19 advanced features, code splitting
@@ -239,6 +262,7 @@ This project demonstrates mastery of:
 ## 📊 Progress Tracking
 
 The project includes comprehensive progress tracking across all planning documents:
+
 - ✅ **Setup Progress**: Phase 1-17 complete (Phase-by-phase implementation tracking)
 - 🎯 **Module Progress**: Resume & Admin modules 100% complete
 - 📋 **Quality Checklists**: All verification steps passed for implemented features
@@ -249,4 +273,4 @@ This application is designed for single-user content management, representing on
 
 ---
 
-*Built with modern 2025 web development patterns to showcase advanced frontend engineering capabilities.*
+_Built with modern 2025 web development patterns to showcase advanced frontend engineering capabilities._
