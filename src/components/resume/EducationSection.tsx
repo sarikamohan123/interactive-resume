@@ -67,14 +67,14 @@ export function EducationSection() {
       <Slide triggerOnce direction="up" duration={700}>
         <div>
           <h2 className="text-4xl font-bold mb-3 tracking-tight bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Education & Certifications
+            Education
           </h2>
           <Fade triggerOnce duration={700} delay={100}>
             <div className="h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full w-20 mb-4" />
           </Fade>
           <Fade triggerOnce duration={700} delay={200}>
             <p className="mt-4 text-lg text-gray-600">
-              Academic achievements and professional certifications
+              Academic achievements and degree qualifications
             </p>
           </Fade>
         </div>

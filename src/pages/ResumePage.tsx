@@ -1,5 +1,6 @@
 import { HeaderSection } from '@/components/resume/HeaderSection'
 import { SkillsSection } from '@/components/resume/SkillsSection'
+import { CertificationsSection } from '@/components/resume/CertificationsSection'
 import { ExperienceSection } from '@/components/resume/ExperienceSection'
 import { EducationSection } from '@/components/resume/EducationSection'
 import { BackToTop } from '@/components/BackToTop'
@@ -21,6 +22,15 @@ export function ResumePage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div id="skills" className="scroll-mt-32">
             <SkillsSection />
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications Section - Purple-Indigo Gradient */}
+      <section className="bg-gradient-to-br from-purple-50/60 via-indigo-50/40 to-purple-50/30 py-24 md:py-32">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div id="certifications" className="scroll-mt-32">
+            <CertificationsSection />
           </div>
         </div>
       </section>

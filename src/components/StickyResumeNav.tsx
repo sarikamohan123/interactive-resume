@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Code2, Briefcase, GraduationCap, Download } from 'lucide-react'
+import { Code2, Award, Briefcase, GraduationCap, Download } from 'lucide-react'
 
 export function StickyResumeNav() {
   const [activeSection, setActiveSection] = useState('skills')
@@ -20,7 +20,7 @@ export function StickyResumeNav() {
       setIsFixed(window.scrollY > navOffsetTop)
 
       // Determine active section based on scroll position
-      const sections = ['skills', 'experience', 'education']
+      const sections = ['skills', 'certifications', 'experience', 'education']
       const sectionElements = sections.map(id => document.getElementById(id))
 
       const scrollPosition = window.scrollY + 200 // Offset for better UX
@@ -85,6 +85,18 @@ export function StickyResumeNav() {
               >
                 <Code2 className="w-4 h-4" />
                 <span>Skills</span>
+              </button>
+
+              <button
+                onClick={() => scrollToSection('certifications')}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full font-medium text-sm transition-all duration-300 ${
+                  activeSection === 'certifications'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-200/50'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <Award className="w-4 h-4" />
+                <span>Certifications</span>
               </button>
 
               <button
