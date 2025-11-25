@@ -53,6 +53,17 @@ Table education {
   created_at timestamptz [default: `now()`]
 }
 
+Table certifications {
+  id uuid [pk]
+  name text [not null]
+  issuing_organization text [not null]
+  issued_at date [not null]
+  credential_id text
+  credential_url text
+  sort_order int [default: 0]
+  created_at timestamptz [default: `now()`]
+}
+
 Table showcase_items {
   id uuid [pk]
   title text [not null]
