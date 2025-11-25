@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
-import { Folder, Network, Code, Briefcase, GraduationCap } from 'lucide-react'
+import { Folder, Network, Code, Briefcase, GraduationCap, Award } from 'lucide-react'
 import { formatDistanceToNowStrict } from 'date-fns'
 
 import { Button } from '@/components/ui/button'
@@ -125,6 +125,28 @@ function AdminDashboard() {
         count: count ?? 0,
         lastUpdated: recent?.created_at ?? null,
         mostRecent: recent ? `${recent.school}` : null,
+      }
+    },
+  })
+
+  const { data: certificationsStats, isLoading: certificationsLoading } = useQuery({
+    queryKey: ['certifications-stats'],
+    queryFn: async (): Promise<EntityStats> => {
+      const { count } = await supabase
+        .from('certifications')
+        .select('*', { count: 'exact', head: true })
+
+      const { data: recent } = await supabase
+        .from('certifications')
+        .select('name, issuing_organization, created_at')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single()
+
+      return {
+        count: count ?? 0,
+        lastUpdated: recent?.created_at ?? null,
+        mostRecent: recent ? `${recent.name} - ${recent.issuing_organization}` : null,
       }
     },
   })
@@ -311,6 +333,34 @@ function AdminDashboard() {
           </div>
         </div>
   )}
+
+        {/* Certifications Card */}
+        {certificationsLoading ? (
+          <SkeletonCard />
+        ) : (
+          <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+          >
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <Award className="h-5 w-5 text-muted-foreground" />
+                <p className="text-sm font-medium text-gray-600">Total Certifications</p>
+              </div>
+              <p className="text-4xl font-bold text-gray-900 mb-3">
+                {certificationsStats?.count ?? 0}
+              </p>
+              <div className="space-y-1">
+                <p className="text-xs text-gray-500">
+                  Updated {formatRelativeTime(certificationsStats?.lastUpdated ?? null)}
+                </p>
+                <p className="text-xs text-gray-600 font-medium" title={certificationsStats?.mostRecent ?? undefined}>
+                  Most recent: {truncate(certificationsStats?.mostRecent ?? null, 25)}
+                </p>
+              </div>
+            </div>
+          </div>
+          </div>
+        )}
       </div>
 
       {/* Quick Actions */}
@@ -364,6 +414,16 @@ function AdminDashboard() {
             >
               <GraduationCap className="h-5 w-5 text-muted-foreground" />
               <span className="font-medium">Manage Education</span>
+            </Button>
+          </Link>
+
+          <Link to="/admin/certifications">
+            <Button
+              variant="outline"
+              className="w-full justify-start gap-3 h-auto py-4 hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
+            >
+              <Award className="h-5 w-5 text-muted-foreground" />
+              <span className="font-medium">Manage Certifications</span>
             </Button>
           </Link>
         </div>

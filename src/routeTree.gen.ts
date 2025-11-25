@@ -22,6 +22,7 @@ import { Route as AdminSubcategoriesIndexRouteImport } from './routes/admin/subc
 import { Route as AdminSkillsIndexRouteImport } from './routes/admin/skills.index'
 import { Route as AdminExperiencesIndexRouteImport } from './routes/admin/experiences.index'
 import { Route as AdminEducationIndexRouteImport } from './routes/admin/education.index'
+import { Route as AdminCertificationsIndexRouteImport } from './routes/admin/certifications.index'
 import { Route as AdminCategoriesIndexRouteImport } from './routes/admin/categories.index'
 
 const AdminRouteImport = createFileRoute('/admin')()
@@ -85,6 +86,12 @@ const AdminEducationIndexRoute = AdminEducationIndexRouteImport.update({
   path: '/education/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCertificationsIndexRoute =
+  AdminCertificationsIndexRouteImport.update({
+    id: '/certifications/',
+    path: '/certifications/',
+    getParentRoute: () => AdminRoute,
+  } as any)
 const AdminCategoriesIndexRoute = AdminCategoriesIndexRouteImport.update({
   id: '/categories/',
   path: '/categories/',
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof Admin_layoutRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/admin/certifications': typeof AdminCertificationsIndexRoute
   '/admin/education': typeof AdminEducationIndexRoute
   '/admin/experiences': typeof AdminExperiencesIndexRoute
   '/admin/skills': typeof AdminSkillsIndexRoute
@@ -113,6 +121,7 @@ export interface FileRoutesByTo {
   '/resume': typeof ResumeRoute
   '/admin': typeof AdminIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
+  '/admin/certifications': typeof AdminCertificationsIndexRoute
   '/admin/education': typeof AdminEducationIndexRoute
   '/admin/experiences': typeof AdminExperiencesIndexRoute
   '/admin/skills': typeof AdminSkillsIndexRoute
@@ -129,6 +138,7 @@ export interface FileRoutesById {
   '/admin/__layout': typeof Admin_layoutRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/categories/': typeof AdminCategoriesIndexRoute
+  '/admin/certifications/': typeof AdminCertificationsIndexRoute
   '/admin/education/': typeof AdminEducationIndexRoute
   '/admin/experiences/': typeof AdminExperiencesIndexRoute
   '/admin/skills/': typeof AdminSkillsIndexRoute
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/'
     | '/admin/categories'
+    | '/admin/certifications'
     | '/admin/education'
     | '/admin/experiences'
     | '/admin/skills'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/resume'
     | '/admin'
     | '/admin/categories'
+    | '/admin/certifications'
     | '/admin/education'
     | '/admin/experiences'
     | '/admin/skills'
@@ -173,6 +185,7 @@ export interface FileRouteTypes {
     | '/admin/__layout'
     | '/admin/'
     | '/admin/categories/'
+    | '/admin/certifications/'
     | '/admin/education/'
     | '/admin/experiences/'
     | '/admin/skills/'
@@ -274,6 +287,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminEducationIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/certifications/': {
+      id: '/admin/certifications/'
+      path: '/certifications'
+      fullPath: '/admin/certifications'
+      preLoaderRoute: typeof AdminCertificationsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/categories/': {
       id: '/admin/categories/'
       path: '/categories'
@@ -288,6 +308,7 @@ interface AdminRouteChildren {
   Admin_layoutRoute: typeof Admin_layoutRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminCategoriesIndexRoute: typeof AdminCategoriesIndexRoute
+  AdminCertificationsIndexRoute: typeof AdminCertificationsIndexRoute
   AdminEducationIndexRoute: typeof AdminEducationIndexRoute
   AdminExperiencesIndexRoute: typeof AdminExperiencesIndexRoute
   AdminSkillsIndexRoute: typeof AdminSkillsIndexRoute
@@ -298,6 +319,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   Admin_layoutRoute: Admin_layoutRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminCategoriesIndexRoute: AdminCategoriesIndexRoute,
+  AdminCertificationsIndexRoute: AdminCertificationsIndexRoute,
   AdminEducationIndexRoute: AdminEducationIndexRoute,
   AdminExperiencesIndexRoute: AdminExperiencesIndexRoute,
   AdminSkillsIndexRoute: AdminSkillsIndexRoute,

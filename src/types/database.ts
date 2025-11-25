@@ -27,6 +27,11 @@ export interface Database {
         Insert: EducationInsert
         Update: EducationUpdate
       }
+      certifications: {
+        Row: Certification
+        Insert: CertificationInsert
+        Update: CertificationUpdate
+      }
       profiles: {
         Row: Profile
         Insert: ProfileInsert
@@ -170,6 +175,38 @@ export interface EducationUpdate {
   start_date?: string
   end_date?: string | null
   details?: Record<string, unknown> | null
+}
+
+// Certifications
+export interface Certification {
+  id: string
+  name: string
+  issuing_organization: string
+  issued_at: string
+  credential_id: string | null
+  credential_url: string | null
+  sort_order: number
+  created_at: string
+}
+
+export interface CertificationInsert {
+  id?: string
+  name: string
+  issuing_organization: string
+  issued_at: string
+  credential_id?: string | null
+  credential_url?: string | null
+  sort_order?: number
+  created_at?: string
+}
+
+export interface CertificationUpdate {
+  name?: string
+  issuing_organization?: string
+  issued_at?: string
+  credential_id?: string | null
+  credential_url?: string | null
+  sort_order?: number
 }
 
 // Profiles (for auth)
