@@ -64,11 +64,39 @@ Table certifications {
   created_at timestamptz [default: `now()`]
 }
 
-Table showcase_items {
+Table projects {
   id uuid [pk]
   title text [not null]
-  summary text
-  details jsonb
+  slug text [not null, unique]
+  summary text [not null]
+  description text
+  role text
+  hero_image_url text
+  additional_image_urls jsonb [default: '[]']
+  live_url text
   repo_url text
+  is_featured boolean [default: false]
+  category text
+  sort_order int [default: 0]
+  created_at timestamptz [default: `now()`]
+}
+
+Table project_tags {
+  id uuid [pk]
+  project_id uuid [not null, ref: > projects.id, note: 'on delete cascade']
+  tag text [not null]
+  created_at timestamptz [default: `now()`]
+
+  Indexes {
+    (project_id, tag) [unique]
+  }
+}
+
+Table project_metrics {
+  id uuid [pk]
+  project_id uuid [not null, ref: > projects.id, note: 'on delete cascade']
+  label text [not null]
+  value text [not null]
+  sort_order int [default: 0]
   created_at timestamptz [default: `now()`]
 }

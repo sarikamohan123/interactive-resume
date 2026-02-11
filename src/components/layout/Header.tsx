@@ -71,6 +71,15 @@ export function Header() {
             >
               Resume
             </Link>
+            <Link
+              to="/showcase"
+              className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 px-3 py-2 rounded-md hover:bg-blue-50 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2"
+              activeProps={{
+                className: 'text-blue-600 bg-blue-50 border-b-2 border-blue-600'
+              }}
+            >
+              Showcase
+            </Link>
 
             {/* Admin Link - Only visible to admins */}
             {isAdmin && (

@@ -32,6 +32,21 @@ export interface Database {
         Insert: CertificationInsert
         Update: CertificationUpdate
       }
+      projects: {
+        Row: Project
+        Insert: ProjectInsert
+        Update: ProjectUpdate
+      }
+      project_tags: {
+        Row: ProjectTag
+        Insert: ProjectTagInsert
+        Update: ProjectTagUpdate
+      }
+      project_metrics: {
+        Row: ProjectMetric
+        Insert: ProjectMetricInsert
+        Update: ProjectMetricUpdate
+      }
       profiles: {
         Row: Profile
         Insert: ProfileInsert
@@ -206,6 +221,100 @@ export interface CertificationUpdate {
   issued_at?: string
   credential_id?: string | null
   credential_url?: string | null
+  sort_order?: number
+}
+
+// Projects
+export interface Project {
+  id: string
+  title: string
+  slug: string
+  summary: string
+  description: string | null
+  role: string | null
+  hero_image_url: string | null
+  additional_image_urls: string[] | null
+  live_url: string | null
+  repo_url: string | null
+  is_featured: boolean
+  category: string | null
+  sort_order: number
+  created_at: string
+}
+
+export interface ProjectInsert {
+  id?: string
+  title: string
+  slug: string
+  summary: string
+  description?: string | null
+  role?: string | null
+  hero_image_url?: string | null
+  additional_image_urls?: string[] | null
+  live_url?: string | null
+  repo_url?: string | null
+  is_featured?: boolean
+  category?: string | null
+  sort_order?: number
+  created_at?: string
+}
+
+export interface ProjectUpdate {
+  title?: string
+  slug?: string
+  summary?: string
+  description?: string | null
+  role?: string | null
+  hero_image_url?: string | null
+  additional_image_urls?: string[] | null
+  live_url?: string | null
+  repo_url?: string | null
+  is_featured?: boolean
+  category?: string | null
+  sort_order?: number
+}
+
+// Project Tags
+export interface ProjectTag {
+  id: string
+  project_id: string
+  tag: string
+  created_at: string
+}
+
+export interface ProjectTagInsert {
+  id?: string
+  project_id: string
+  tag: string
+  created_at?: string
+}
+
+export interface ProjectTagUpdate {
+  tag?: string
+}
+
+// Project Metrics
+export interface ProjectMetric {
+  id: string
+  project_id: string
+  label: string
+  value: string
+  sort_order: number
+  created_at: string
+}
+
+export interface ProjectMetricInsert {
+  id?: string
+  project_id: string
+  label: string
+  value: string
+  sort_order?: number
+  created_at?: string
+}
+
+export interface ProjectMetricUpdate {
+  label?: string
+  value?: string
   sort_order?: number
 }
 

@@ -11,6 +11,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ShowcaseRouteImport } from './routes/showcase'
 import { Route as ResumeRouteImport } from './routes/resume'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LoginRouteImport } from './routes/login'
@@ -20,6 +21,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as Admin_layoutRouteImport } from './routes/admin/__layout'
 import { Route as AdminSubcategoriesIndexRouteImport } from './routes/admin/subcategories.index'
 import { Route as AdminSkillsIndexRouteImport } from './routes/admin/skills.index'
+import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects.index'
 import { Route as AdminExperiencesIndexRouteImport } from './routes/admin/experiences.index'
 import { Route as AdminEducationIndexRouteImport } from './routes/admin/education.index'
 import { Route as AdminCertificationsIndexRouteImport } from './routes/admin/certifications.index'
@@ -30,6 +32,11 @@ const AdminRouteImport = createFileRoute('/admin')()
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowcaseRoute = ShowcaseRouteImport.update({
+  id: '/showcase',
+  path: '/showcase',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResumeRoute = ResumeRouteImport.update({
@@ -76,6 +83,11 @@ const AdminSkillsIndexRoute = AdminSkillsIndexRouteImport.update({
   path: '/skills/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminProjectsIndexRoute = AdminProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminExperiencesIndexRoute = AdminExperiencesIndexRouteImport.update({
   id: '/experiences/',
   path: '/experiences/',
@@ -104,12 +116,14 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/showcase': typeof ShowcaseRoute
   '/admin': typeof Admin_layoutRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
   '/admin/certifications': typeof AdminCertificationsIndexRoute
   '/admin/education': typeof AdminEducationIndexRoute
   '/admin/experiences': typeof AdminExperiencesIndexRoute
+  '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/skills': typeof AdminSkillsIndexRoute
   '/admin/subcategories': typeof AdminSubcategoriesIndexRoute
 }
@@ -119,11 +133,13 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/showcase': typeof ShowcaseRoute
   '/admin': typeof AdminIndexRoute
   '/admin/categories': typeof AdminCategoriesIndexRoute
   '/admin/certifications': typeof AdminCertificationsIndexRoute
   '/admin/education': typeof AdminEducationIndexRoute
   '/admin/experiences': typeof AdminExperiencesIndexRoute
+  '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/skills': typeof AdminSkillsIndexRoute
   '/admin/subcategories': typeof AdminSubcategoriesIndexRoute
 }
@@ -134,6 +150,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/resume': typeof ResumeRoute
+  '/showcase': typeof ShowcaseRoute
   '/admin': typeof AdminRouteWithChildren
   '/admin/__layout': typeof Admin_layoutRoute
   '/admin/': typeof AdminIndexRoute
@@ -141,6 +158,7 @@ export interface FileRoutesById {
   '/admin/certifications/': typeof AdminCertificationsIndexRoute
   '/admin/education/': typeof AdminEducationIndexRoute
   '/admin/experiences/': typeof AdminExperiencesIndexRoute
+  '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/skills/': typeof AdminSkillsIndexRoute
   '/admin/subcategories/': typeof AdminSubcategoriesIndexRoute
 }
@@ -152,12 +170,14 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/resume'
+    | '/showcase'
     | '/admin'
     | '/admin/'
     | '/admin/categories'
     | '/admin/certifications'
     | '/admin/education'
     | '/admin/experiences'
+    | '/admin/projects'
     | '/admin/skills'
     | '/admin/subcategories'
   fileRoutesByTo: FileRoutesByTo
@@ -167,11 +187,13 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/resume'
+    | '/showcase'
     | '/admin'
     | '/admin/categories'
     | '/admin/certifications'
     | '/admin/education'
     | '/admin/experiences'
+    | '/admin/projects'
     | '/admin/skills'
     | '/admin/subcategories'
   id:
@@ -181,6 +203,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/resume'
+    | '/showcase'
     | '/admin'
     | '/admin/__layout'
     | '/admin/'
@@ -188,6 +211,7 @@ export interface FileRouteTypes {
     | '/admin/certifications/'
     | '/admin/education/'
     | '/admin/experiences/'
+    | '/admin/projects/'
     | '/admin/skills/'
     | '/admin/subcategories/'
   fileRoutesById: FileRoutesById
@@ -198,6 +222,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResumeRoute: typeof ResumeRoute
+  ShowcaseRoute: typeof ShowcaseRoute
   AdminRoute: typeof AdminRouteWithChildren
 }
 
@@ -208,6 +233,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showcase': {
+      id: '/showcase'
+      path: '/showcase'
+      fullPath: '/showcase'
+      preLoaderRoute: typeof ShowcaseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resume': {
@@ -273,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSkillsIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/projects/': {
+      id: '/admin/projects/'
+      path: '/projects'
+      fullPath: '/admin/projects'
+      preLoaderRoute: typeof AdminProjectsIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/experiences/': {
       id: '/admin/experiences/'
       path: '/experiences'
@@ -311,6 +350,7 @@ interface AdminRouteChildren {
   AdminCertificationsIndexRoute: typeof AdminCertificationsIndexRoute
   AdminEducationIndexRoute: typeof AdminEducationIndexRoute
   AdminExperiencesIndexRoute: typeof AdminExperiencesIndexRoute
+  AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
   AdminSkillsIndexRoute: typeof AdminSkillsIndexRoute
   AdminSubcategoriesIndexRoute: typeof AdminSubcategoriesIndexRoute
 }
@@ -322,6 +362,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCertificationsIndexRoute: AdminCertificationsIndexRoute,
   AdminEducationIndexRoute: AdminEducationIndexRoute,
   AdminExperiencesIndexRoute: AdminExperiencesIndexRoute,
+  AdminProjectsIndexRoute: AdminProjectsIndexRoute,
   AdminSkillsIndexRoute: AdminSkillsIndexRoute,
   AdminSubcategoriesIndexRoute: AdminSubcategoriesIndexRoute,
 }
@@ -334,6 +375,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResumeRoute: ResumeRoute,
+  ShowcaseRoute: ShowcaseRoute,
   AdminRoute: AdminRouteWithChildren,
 }
 export const routeTree = rootRouteImport

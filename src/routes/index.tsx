@@ -11,7 +11,8 @@ import {
   MapPin,
   Phone,
   Github,
-  Linkedin
+  Linkedin,
+  Rocket,
 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -265,6 +266,26 @@ function IndexComponent() {
         </div>
       </section>
 
+      {/* Showcase CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-indigo-50 to-purple-50">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            See My Work in Action
+          </h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Explore featured projects with live demos, tech stack details, and measurable impact metrics.
+          </p>
+          <Link
+            to="/showcase"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-lg motion-safe:transform motion-safe:hover:scale-105"
+          >
+            <Rocket className="w-5 h-5" />
+            View Showcase
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </section>
+
       {/* Tech Stack Section - Enhanced */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-200">
         <div className="max-w-5xl mx-auto">
@@ -306,13 +327,22 @@ function IndexComponent() {
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
               Ready to see my work?
             </h3>
-            <Link
-              to="/resume"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-lg motion-safe:transform motion-safe:hover:scale-105"
-            >
-              Explore My Resume
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/resume"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-lg motion-safe:transform motion-safe:hover:scale-105"
+              >
+                Explore My Resume
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link
+                to="/showcase"
+                className="inline-flex items-center gap-2 bg-white text-purple-600 border-2 border-purple-200 px-8 py-4 rounded-xl hover:bg-purple-50 hover:border-purple-300 transition-all duration-300 shadow-lg hover:shadow-xl font-semibold text-lg motion-safe:transform motion-safe:hover:scale-105"
+              >
+                View Projects
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
