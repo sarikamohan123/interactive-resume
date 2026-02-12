@@ -178,7 +178,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         try {
           const data = await fetchProfile(session.user.id)
           if (mounted.current) {
-            setProfile(data)
+            // Only update profile if fetch succeeded — keep existing profile on timeout/failure
+            if (data) {
+              setProfile(data)
+            }
             setLoading(false)
             setAuthReady(true)
           }
