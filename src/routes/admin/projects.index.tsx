@@ -421,8 +421,7 @@ function ProjectsPage() {
                       <FormLabel>Hero Image URL (Optional)</FormLabel>
                       <FormControl>
                         <Input
-                          type="url"
-                          placeholder="https://example.com/screenshot.png"
+                          placeholder="/images/screenshot.png or https://example.com/screenshot.png"
                           {...field}
                           value={field.value || ''}
                         />

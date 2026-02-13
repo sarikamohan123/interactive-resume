@@ -198,6 +198,7 @@ export function ShowcaseGrid() {
               direction="up"
               duration={700}
               delay={300 + index * 150}
+              className="h-full"
             >
               <ProjectCard project={project} onClick={() => setSelectedProject(project)} />
             </Slide>

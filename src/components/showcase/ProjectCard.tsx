@@ -13,7 +13,7 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
 
   return (
     <Card
-      className="group cursor-pointer border-2 border-blue-200 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-300/50 transition-all duration-300 motion-safe:hover:-translate-y-2 bg-white overflow-hidden active:scale-[0.98]"
+      className="group cursor-pointer border-2 border-blue-200 hover:border-purple-400 hover:shadow-2xl hover:shadow-purple-300/50 transition-all duration-300 motion-safe:hover:-translate-y-2 bg-white overflow-hidden active:scale-[0.98] h-full flex flex-col"
       onClick={onClick}
     >
       {/* Hero Image */}
@@ -47,7 +47,7 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
         <p className="text-sm text-gray-600 line-clamp-2 mt-1">{project.summary}</p>
       </CardHeader>
 
-      <CardContent className="pt-0">
+      <CardContent className="pt-0 flex-1 flex flex-col justify-end">
         {/* Tech Tags */}
         <div className="flex flex-wrap gap-1.5 mb-3">
           {project.project_tags.slice(0, 4).map((pt) => (

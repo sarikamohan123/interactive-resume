@@ -18,8 +18,11 @@ export const projectSchema = z.object({
   role: z.string().max(200, 'Role must be less than 200 characters').trim().optional().nullable(),
   hero_image_url: z
     .string()
-    .url('Must be a valid URL')
     .max(500, 'URL must be less than 500 characters')
+    .refine(
+      (val) => val === '' || val.startsWith('/') || /^https?:\/\//.test(val),
+      'Must be a valid URL or a path starting with /',
+    )
     .or(z.literal(''))
     .nullable()
     .optional(),
